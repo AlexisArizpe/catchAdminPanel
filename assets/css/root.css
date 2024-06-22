@@ -1,0 +1,30 @@
+:root {
+  --global-color-white: #ffffff;
+  --global-color-black: #000000;
+  --global-color-grey: #e8e8e8;
+  --global-color-grey-selected: #dadada;
+  --global-color-txt-grey: #a8a8a8;
+  --global-color-txt-field-diabled-grey: #f5f5f5;
+  --global-bg-color-grey-panel: #f8f8f8;
+  --global-color-grey-border: #f5f5f5;
+  --global-color-primary: #000000;
+  --global-color-txt-header-table: #898a8d;
+  --global-color-black-transparent-primary: rgba(0, 0, 0, 0.5);
+  --global-color-yellow-primary: #fcf538;
+  --global-color-green-btn: #86c157;
+  --global-color-grey-btn: #DBDBDB;
+  --global-color-grey-text: #b6b5b5;
+  --global-color-orange: #FF8A00;
+  --global-color-green: #86c157;
+  --global-color-red: #c62c2c;
+  --global-color-red-canceled: #c62c2c;
+  --global-color-scroll: #707070;
+  --global-color-box-shadow: #06060658;
+  --global-color-grey-empty: #707070;
+
+  --global-color-status-programmed: #ff8a01;
+  --global-color-status-without-stock: #fcf538;
+  --global-color-status-published: #86c157;
+  --global-color-status-finalized: #86c157;
+  --global-color-status-cancelled: #c62c2c;
+}

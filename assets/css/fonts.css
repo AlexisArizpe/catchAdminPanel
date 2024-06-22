@@ -1,0 +1,67 @@
+html,
+body {
+  font-family: "Roboto" !important;
+  /* background-color: var(--global-color-bg-grey); */
+}
+body::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+}
+
+body::-webkit-scrollbar-track {
+  box-shadow: transparent;
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--global-color-scroll) !important;
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: var(--global-color-scroll) !important;
+}
+
+* {
+  font-family: "Roboto";
+}
+
+/* #region font faces poppins */
+@font-face {
+  font-family: "Poppins Regular";
+  src: url("assets/fonts/Poppins/Poppins-Regular.ttf") format("opentype");
+}
+@font-face {
+  font-family: "Poppins Italic";
+  src: url("assets/fonts/Poppins/Poppins-Italic.ttf") format("opentype");
+}
+@font-face {
+  font-family: "Poppins Medium";
+  src: url("assets/fonts/Poppins/Poppins-Medium.ttf") format("opentype");
+}
+
+@font-face {
+  font-family: "Poppins Medium Italic";
+  src: url("assets/fonts/Poppins/Poppins-MediumItalic.ttf") format("opentype");
+}
+@font-face {
+  font-family: "Poppins Bold";
+  src: url("assets/fonts/Poppins/Poppins-Bold.ttf") format("opentype");
+}
+@font-face {
+  font-family: "Poppins Semi Bold";
+  src: url("assets/fonts/Poppins/Poppins-SemiBold.ttf") format("opentype");
+}
+@font-face {
+  font-family: "Poppins Bold Italic";
+  src: url("assets/fonts/Poppins/Poppins-BoldItalic.ttf") format("opentype");
+}
+@font-face {
+  font-family: "Poppins Medium";
+  src: url("assets/fonts/Poppins/Poppins-Medium.ttf") format("opentype");
+}
+@font-face {
+  font-family: "Poppins Thin";
+  src: url("assets/fonts/Poppins/Poppins-Thin.ttf") format("opentype");
+}
+/* #endregion font faces poppins */

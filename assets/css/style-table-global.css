@@ -1,0 +1,115 @@
+.v-data-table {
+  line-height: 1.5;
+  max-width: 100%;
+  border-radius: 10px !important;
+}
+
+.v-data-table-header {
+  /* background-color: var(--global-color-background-header-card-mobile); */
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
+}
+.v-data-table__wrapper {
+  border-radius: 10px !important;
+}
+
+.global-col-header-accion {
+  /* background-color: var(--global-color-background-header-card-mobile); */
+  position: sticky !important;
+  right: 0;
+  top: auto !important;
+  z-index: 0 !important;
+}
+
+th {
+  white-space: nowrap;
+  font-family: "Roboto" !important;
+  color: var(--global-color-black) !important;
+}
+
+.global-header-table {
+  font-size: 13px !important;
+}
+
+.global-header-accions {
+  text-align-last: center;
+  width: 120px !important;
+  min-width: 120px !important;
+  max-width: 120px !important;
+}
+
+td {
+  white-space: nowrap;
+}
+
+.global-header-name {
+  padding: 0px 0px 0px 50px !important;
+  width: 296px !important;
+  border-top-left-radius: 20px !important;
+
+  max-width: 296px !important;
+  min-width: 296px !important;
+}
+
+.global-body-table {
+  font-size: 14px !important;
+}
+
+.global-col-body-accion {
+  background-color: var(--global-color-white) !important;
+  position: sticky !important;
+  right: 0;
+  top: auto !important;
+  z-index: 0 !important;
+}
+.theme--light.v-data-table
+  > .v-data-table__wrapper
+  > table
+  > tbody
+  > tr:hover:not(.v-data-table__expanded__content):not(
+    .v-data-table__empty-wrapper
+  ) {
+  background-color: transparent !important;
+}
+
+.theme--light.v-data-table
+  > .v-data-table__wrapper
+  > table
+  > tbody
+  > tr:not(:last-child)
+  > td:not(.v-data-table__mobile-row),
+.theme--light.v-data-table
+  > .v-data-table__wrapper
+  > table
+  > tbody
+  > tr:not(:last-child)
+  > th:not(.v-data-table__mobile-row) {
+  border-bottom: thin solid transparent !important;
+}
+
+tr:nth-child(even) {
+  /* background: var(--global-color-background-body-table-blue) !important ; */
+}
+
+.section-btns-accions-table {
+  display: flex;
+  justify-content: flex-end;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+}
+
+.v-data-footer {
+  font-family: "Roboto" !important;
+  color: var(--global-color-black) !important;
+  font-size: 12px !important;
+  /* background-color: var(--global-color-background-header-card-mobile); */
+}
+
+.footer-table {
+  background-color: transparent;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
