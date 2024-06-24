@@ -144,7 +144,7 @@
         class="btn-second-red-global"
         color="red"
         width="200px"
-        :loading="bLoadingBtnPlatformAccess"
+        :loading="bLoadingBtnRejected"
         @click="setRejectedStatusConfirm"
       >
         Rechazar solicitud
@@ -156,7 +156,7 @@
         variant="flat"
         color="orange"
         width="200px"
-        :loading="bLoadingBtnAdd"
+        :loading="bLoadingBtnProcessing"
         @click="setProcessingConfirm"
       >
         Iniciar trámite
@@ -186,9 +186,9 @@ export default {
     sCreatedName: null,
     bPlatformAccess: null,
     aPermissions: [],
-    bLoadingBtnAdd: false,
+    bLoadingBtnProcessing: false,
     bLoadingBtnDelete: false,
-    bLoadingBtnPlatformAccess: false,
+    bLoadingBtnRejected: false,
   }),
   computed: {
     // #region Variables de permisos
@@ -310,7 +310,7 @@ export default {
     },
     async setProcessing() {
       try {
-        this.bLoadingBtnAdd = true;
+        this.bLoadingBtnProcessing = true;
 
         const config = {
             headers: {
@@ -335,9 +335,9 @@ export default {
         });
         this.setCloseDialog();
         this.$store.table.setRefresh(true);
-        this.bLoadingBtnAdd = false;
+        this.bLoadingBtnProcessing = false;
       } catch (error) {
-        this.bLoadingBtnAdd = false;
+        this.bLoadingBtnProcessing = false;
         this.$swal.fire({
           title: "¡Error!",
           text: error.response.data.message,
@@ -372,36 +372,40 @@ export default {
     },
     async setRejectedStatus() {
       try {
-        this.bLoadingBtnPlatformAccess = true;
+        this.bLoadingBtnRejected = true;
+
         const config = {
             headers: {
               Authorization: `Bearer ${this.$store.user.sToken}`,
             },
           },
           payload = {
-            bPlatformAccess: !this.bPlatformAccess,
+            sAdministratorId: this.sAdministratorId,
+            eStatus: "rejected", // 'processing', 'rejected', 'accepted'
           };
-        const oResult = await this.$api.put(
-          `administrators/${this.sAdmissionId}/access`,
+
+        const oResult = await this.$api.patch(
+          `admissions/${this.sAdmissionId}/status`,
           payload,
           config
         );
         this.$swal.fire({
-          title: `¡${this.bPlatformAccess ? "Bloqueado" : "Desbloqueado"}!`,
+          title: "¡Actualizado!",
           text: oResult.data.message,
           icon: "success",
           confirmButtonText: "Cerrar",
         });
+        this.setCloseDialog();
         this.$store.table.setRefresh(true);
-        this.bLoadingBtnPlatformAccess = false;
+        this.bLoadingBtnRejected = false;
       } catch (error) {
+        this.bLoadingBtnRejected = false;
         this.$swal.fire({
           title: "¡Error!",
           text: error.response.data.message,
           icon: "error",
           confirmButtonText: "Cerrar",
         });
-        this.bLoadingBtnPlatformAccess = false;
       }
     },
     async setDeteleteConfirm() {

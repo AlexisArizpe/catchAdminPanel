@@ -61,11 +61,7 @@
         </v-text-field>
       </div>
       <div v-if="bShowSearchAbacus" class="content-search-abacus">
-        <v-btn
-          class="btn-second-global"
-          color="black"
-          variant="outlined"
-        >
+        <v-btn class="btn-second-global" color="black" variant="outlined">
           <span class="mdi mdi-filter-variant icon-filter-variant"></span
           >Filtrar
 
@@ -138,9 +134,13 @@ export default {
     iItemsPerPage: 30,
     aItemsPerPage: [1, 5, 30, 50, 60],
     iPage: 1,
-    aShowSearchText: ["admin-admissions","admin-establishments","admin-employees"],
+    aShowSearchText: [
+      "admin-admissions",
+      "admin-establishments",
+      "admin-establishments-id",
+      "admin-employees",
+    ],
     aShowSearchAbacus: ["admin-benefits"],
- 
   }),
   emits: ["setItemsPerPage", "setPage", "setSearch"],
   computed: {
@@ -219,7 +219,7 @@ export default {
 }
 
 .txt-items-per-page-footer-global {
-  font-size: .9rem !important;
+  font-size: 0.9rem !important;
 }
 .input-item-per-page-footer {
   width: 90px;
@@ -255,7 +255,7 @@ export default {
 }
 
 .txt-footer-page-global {
-  font-size: .9rem !important;
+  font-size: 0.9rem !important;
   margin-left: 5px;
   margin-right: 5px;
 }

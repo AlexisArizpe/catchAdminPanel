@@ -10,7 +10,7 @@ export const useMenuStore = defineStore('menu', {
             // #region Dashboard
             {
                 sId: "23848956-f197-4b39-b17a-3bfa46084202",
-                sIcon: "mdi mdi-border-all",
+                sIcon: "radix-icons:dashboard",
                 sName: "Dashboard",
                 sActions: null,
                 sRoute: "admin-dashboard",
@@ -23,7 +23,7 @@ export const useMenuStore = defineStore('menu', {
             // #region Pagos
             {
                 sId: "1a4d2c35-a282-486d-b1ef-da34f0573511",
-                sIcon: "mdi mdi-account-group-outline",
+                sIcon: "ep:dish",
                 sName: "Pagos",
                 sActions: null,
                 sRoute: "admin-payments",
@@ -36,7 +36,7 @@ export const useMenuStore = defineStore('menu', {
             // #region Restaurantes
             {
                 sId: "6f558dad-0fdd-43a4-9a13-1c8e04817099",
-                sIcon: "mdi mdi-ticket-confirmation-outline",
+                sIcon: "fluent:payment-32-regular",
                 sName: "Restaurantes",
                 sActions: null,
                 sRoute: "admin-establishments",
@@ -49,7 +49,7 @@ export const useMenuStore = defineStore('menu', {
             // #region Admisiones
             {
                 sId: "49619324-212b-4c0d-a6aa-0d8b54d811d1",
-                sIcon: "mdi mdi-history",
+                sIcon: "ph:git-pull-request",
                 sName: "Admisiones",
                 sActions: null,
                 sRoute: "admin-admissions",
@@ -62,7 +62,7 @@ export const useMenuStore = defineStore('menu', {
             // #region Empleados
             {
                 sId: "2dc2e86c-d3ec-49cd-8c59-514bcfeaf5ec",
-                sIcon: "mdi mdi-history",
+                sIcon: "fluent:people-team-20-regular",
                 sName: "Empleados",
                 sActions: null,
                 sRoute: "admin-employees",
@@ -75,7 +75,7 @@ export const useMenuStore = defineStore('menu', {
             // #region Consumidores
             {
                 sId: "1749065d-b3eb-4d69-b4a0-bbd3f758daaa",
-                sIcon: "mdi mdi-history",
+                sIcon: "solar:user-broken",
                 sName: "Consumidores",
                 sActions: null,
                 sRoute: "admin-customers",

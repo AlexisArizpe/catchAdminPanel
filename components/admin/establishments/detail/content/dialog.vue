@@ -500,7 +500,7 @@ export default {
           title: `<span class="font-weight-regular">¿Seguro que deseas <span class="font-weight-bold color-red-global"> ${
             this.bPlatformAccess ? "bloquear" : "desbloquear"
           } </span> el <span class="font-weight-bold">usuario ${
-            this.sFullName
+            this.sPublicNameRestaurant
           } </span>?</span>`,
           icon: "warning",
 
@@ -560,7 +560,7 @@ export default {
       swalWithBootstrapButtons
         .fire({
           title: `<span class="font-weight-regular">¿Seguro que deseas <span class="font-weight-bold color-red-global"> eliminar </span>
-              el <span class="font-weight-bold">usuario ${this.sFullName} </span>?</span>`,
+              el <span class="font-weight-bold">usuario ${this.sPublicNameRestaurant} </span>?</span>`,
           icon: "warning",
 
           showCancelButton: true,

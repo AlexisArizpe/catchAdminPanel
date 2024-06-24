@@ -14,7 +14,7 @@
           variant="outlined"
         >
           <v-icon class="ml-1">mdi mdi-arrow-left</v-icon>
-          <span>Volver a Consumidores</span>
+          <span>Volver a Restaurantes</span>
         </v-btn>
       </div>
 
@@ -26,7 +26,7 @@
           color="primary"
         >
           <v-icon class="ml-1">mdi mdi-plus</v-icon>
-          <span>Ver información del consumidor</span>
+          <span>Ver información del restaurante</span>
         </v-btn>
       </div>
     </div>

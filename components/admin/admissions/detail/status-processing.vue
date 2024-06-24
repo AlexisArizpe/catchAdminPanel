@@ -639,7 +639,7 @@ export default {
     },
     async setResendStatus() {
       try {
-        this.bLoadingBtnRejected = true;
+        this.bLoadingBtnResend = true;
 
         const config = {
             headers: {
@@ -669,9 +669,9 @@ export default {
         });
         this.setCloseDialog();
         this.$store.table.setRefresh(true);
-        this.bLoadingBtnRejected = false;
+        this.bLoadingBtnResend = false;
       } catch (error) {
-        this.bLoadingBtnRejected = false;
+        this.bLoadingBtnResend = false;
         this.$swal.fire({
           title: "¡Error!",
           text: error.response.data.message,

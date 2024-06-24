@@ -1,7 +1,7 @@
 <template>
   <div class="content-global-table">
     <p class="txt-title-table-global">
-      <span class="font-weight-bold">Historial</span> de Beneficios
+      <span class="font-weight-bold">Beneficios</span> del restaurante
     </p>
     <table-card-search-top
       :iTotal="iTotal"
@@ -22,6 +22,9 @@
       :items="aItems"
       :search="search"
     >
+      <template v-slot:item.sFolio="{ item }">
+        <span class="w-s-nowrap">{{ item.sFolio }}</span>
+      </template>
       <template v-slot:item.sStatus="{ item }">
         <div class="d-flex justify-center">
           <div

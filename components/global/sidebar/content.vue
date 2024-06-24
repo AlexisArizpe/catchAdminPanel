@@ -31,7 +31,8 @@
             "
           >
             <div class="content-icon-sidebar">
-              <span :class="oItem.sIcon" class="icon-item-sidebar"> </span>
+              <Icon :icon="oItem.sIcon" class="icon-item-sidebar" />
+              <!-- <span :class="oItem.sIcon" class="icon-item-sidebar"> </span>  -->
             </div>
           </div>
         </div>

@@ -4,7 +4,7 @@
       <!-- <google-map @location-changed="updateLocation" /> -->
       <headers-header sNameHeader="Gestor de pagos" />
 
-      <div class="content-general-global pt-5"></div>
+      <coming-soon-content />
     </NuxtLayout>
   </div>
 </template>

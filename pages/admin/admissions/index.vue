@@ -224,6 +224,7 @@ export default {
             sSearch: this.sSearch ? this.sSearch : "",
             iPageNumber: this.iPage,
             iItemsPerPage: this.iItemsPerPage,
+            eStatus:['accepted','processing','rejected','accepted']
           },
         };
 
