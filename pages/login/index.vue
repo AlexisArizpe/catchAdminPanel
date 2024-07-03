@@ -128,7 +128,6 @@ export default {
           // consulta los permisos del cliente, tanto si es super admin y los modulos disponibles.
           let aPermissions =
             await this.$store.permissions.getPermissionsGlobal();
-            console.log(aPermissions,"aPermissions")
 
           let sFirstModuleId =
             aPermissions.data.user.Administrator.Permissions[0].sModuleId;
@@ -145,7 +144,19 @@ export default {
             hideProgressBar: true,
           });
           setTimeout(() => {
-            this.$router.push({ name: sToRoute });
+            const bDetailCustomer =
+              this.$route.redirectedFrom?.query?.sId &&
+              this.$route.redirectedFrom?.query?.eStatus
+                ? true
+                : false;
+            if (bDetailCustomer) {
+              this.$router.push({
+                name: this.$route.redirectedFrom.name,
+                query: this.$route.redirectedFrom.query,
+              });
+            } else {
+              this.$router.push({ name: sToRoute });
+            }
           }, 2500);
         }
       } catch (error) {

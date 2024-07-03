@@ -92,7 +92,6 @@ export const useMenuStore = defineStore('menu', {
         async getMenuFilterGlobal() {
             // this.aMenuFilterGlobal = []
             const oResponse = await usePermissionsStore().getPermissionsGlobal();
-            console.log(oResponse,"oResponse")
             const aPermissions = JSON.parse(JSON.stringify(oResponse.data.user.Administrator.Permissions));
             const aPermissionsFilter = JSON.parse(JSON.stringify(aPermissions)).filter((e: any) => e.eAction !== "FORBIDDEN")
             const aMenuFilter = [];

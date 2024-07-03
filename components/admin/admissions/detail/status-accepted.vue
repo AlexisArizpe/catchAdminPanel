@@ -483,7 +483,6 @@ export default {
           `admissions/${this.sAdmissionId}`,
           payload
         );
-        console.log(oResult.data.admissionRequest, "admissionRequest");
         this.setFillData(oResult.data.admissionRequest);
         this.$store.table.setRefresh(false);
       } catch (error) {

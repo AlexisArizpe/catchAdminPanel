@@ -247,7 +247,6 @@ export default {
     },
     setDetailItem(oItem) {
       if (oItem) {
-        console.log(oItem, "oItem");
       }
       this.bDialog = !this.bDialog;
     },

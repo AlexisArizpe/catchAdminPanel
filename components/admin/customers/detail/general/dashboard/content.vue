@@ -14,7 +14,7 @@
             Beneficios <span class="font-weight-bold">{{ oItem.sName }}</span>
           </p>
           <p class="txt-description">
-            <span class="font-weight-bold">{{ oItem.sPorcent }} </span>({{
+            <span class="font-weight-bold">{{ oItem.sPorcent }} </span> ({{
               oItem.sTotal
             }})
           </p>

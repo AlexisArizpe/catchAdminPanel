@@ -2,14 +2,27 @@
   <div>
     <NuxtLayout name="initial">
       <div class="content-form-initial">
-        <div class="content-form-initial-title-global">
+        <div v-if="bFormSend" class="content-message-all">
+          <div class="content-icon-message-global">
+            <Icon
+              icon="lets-icons:check-ring-light"
+              class="icon-message-global"
+            />
+          </div>
+          <p class="txt-title-message-global">¡Listo!</p>
+          <p class="txt-description-message-global">
+            En breve, uno de nuestros asesores <br />
+            se pondrá en contacto contigo
+          </p>
+        </div>
+        <div v-if="!bFormSend" class="content-form-initial-title-global">
           <span class="txt-initial-global"
             >Formulario de contacto
             <span class="txt-sub-initial-global">Completa tus datos</span></span
           >
         </div>
 
-        <div class="content-form-inputs">
+        <div v-if="!bFormSend" class="content-form-inputs">
           <p class="txt-title-form mb-1">Datos del cliente</p>
           <hr class="mb-6" />
           <v-form ref="form" class="w-100p">
@@ -119,7 +132,7 @@
           </v-form>
         </div>
 
-        <div class="content-form-initial-btns-global">
+        <div v-if="!bFormSend" class="content-form-initial-btns-global">
           <v-btn
             @click="setAdd()"
             class="btn-primary-global"
@@ -147,6 +160,7 @@ export default {
       sEmail: null,
       sEstablishmentName: null,
       bLoading: false,
+      bFormSend: false,
     };
   },
   mounted() {
@@ -182,13 +196,14 @@ export default {
           const oResult = await this.$api.post(`admissions`, payload, config);
           this.setEmptyDatea();
           this.$refs.form.reset();
-          this.$swal.fire({
-            title: "¡Listo!",
-            text: oResult.data.message,
-            icon: "success",
-            confirmButtonText: "Cerrar",
-          });
-          this.$store.table.setRefresh(true);
+          // this.$swal.fire({
+          //   title: "¡Listo!",
+          //   text: oResult.data.message,
+          //   icon: "success",
+          //   confirmButtonText: "Cerrar",
+          // });
+          // this.$store.table.setRefresh(true);
+          this.bFormSend = true;
           this.bLoading = false;
         }
       } catch (error) {
@@ -259,5 +274,12 @@ export default {
 }
 .content-form-initial::-webkit-scrollbar-thumb:hover {
   background: var(--global-color-scroll) !important;
+}
+
+.content-form-send-all {
+}
+.txt-ready-form-send {
+}
+.txt-description-form-send {
 }
 </style>

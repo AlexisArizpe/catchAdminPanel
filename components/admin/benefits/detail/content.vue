@@ -1206,9 +1206,7 @@ export default {
       )} ~ ${this.getHours(new Date(oItem.tEndDate))}`;
 
       let aStartHourTemp = this.getHours(new Date(oItem.tStartDate)).split(":");
-      console.log(aStartHourTemp);
       let aEndHourTemp = this.getHours(new Date(oItem.tEndDate)).split(":");
-      console.log(aEndHourTemp);
       this.tStartTime = {
         hours: Number(aStartHourTemp[0]),
         minutes: Number(aStartHourTemp[1]),

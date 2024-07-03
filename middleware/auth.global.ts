@@ -33,16 +33,18 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       }
 
       //Verifica si a donde ira tiene acceso y en caso de no tener, te manda a la primera modulo que si tiene acceso 
-      let sPath = to.fullPath.split('/').slice(0, 3).join('/').replaceAll('/', '-');
-      sPath = sPath.substr(1, sPath.length)
+      let sPath = to.name?.toString().split('-').slice(0, 2).join('-');
+
       let bHasPermision = aMenuFilter.find(e => e.sRoute === sPath)?.sRouteName
-      if (bHasPermision === undefined) {
-        return navigateTo(`/admin/${aMenuFilter[0].sRouteName}`)
+      if (sRouteName != 'establishment-form-token-id' && sRouteName != 'admission-form') {
+        if (bHasPermision === undefined) {
+          return navigateTo(`/admin/${aMenuFilter[0].sRouteName}`)
+        }
       }
 
     }
   } else {
-    if (sRouteName === undefined || sRouteName === 'index' || sRouteName !== 'login' && sRouteName !== 'password-recovery' && sRouteName !== 'reset-password-token-type' && sRouteName !== 'signup' && sRouteName !== 'customer-form'  && sRouteName !== 'establishment-form-token-id') {
+    if (sRouteName === undefined || sRouteName === 'index' || sRouteName !== 'login' && sRouteName !== 'password-recovery' && sRouteName !== 'reset-password-token-type' && sRouteName !== 'signup' && sRouteName !== 'admission-form' && sRouteName !== 'establishment-form-token-id') {
       return navigateTo('/login')
     }
   }

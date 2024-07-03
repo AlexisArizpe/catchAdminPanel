@@ -274,7 +274,6 @@ export default {
       this.$refs.inputDoc.click();
     },
     setDetailItem(oItem) {
-      // console.log(oItem,"oItem")
       window.open(oItem.sFileUrl, "_blank");
     },
     async setDeleteItem() {

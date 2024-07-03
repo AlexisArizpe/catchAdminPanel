@@ -211,6 +211,10 @@ export default {
     },
   },
   async beforeMount() {
+    const bDetail = this.$route.query?.sId && this.$route.query?.eStatus ? true : false;
+    if (bDetail) {
+      this.setDetailItem(this.$route.query)
+    }
     await this.getItems();
   },
   methods: {
@@ -224,7 +228,7 @@ export default {
             sSearch: this.sSearch ? this.sSearch : "",
             iPageNumber: this.iPage,
             iItemsPerPage: this.iItemsPerPage,
-            eStatus:['accepted','processing','rejected','accepted']
+            eStatus: ["pending", "processing", "rejected", "accepted"],
           },
         };
 
@@ -291,7 +295,6 @@ export default {
     },
     setDetailItem(oItem) {
       if (oItem) {
-        console.log(oItem, "oItem");
         this.sTypeDialog = "edit";
         this.sAdmissionId = oItem.sId;
         this.sComponent = this.getComponent(oItem.eStatus);
