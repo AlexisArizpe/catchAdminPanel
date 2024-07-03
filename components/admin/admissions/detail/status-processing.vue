@@ -281,6 +281,7 @@
                 <v-text-field
                   v-model="sEmailManager"
                   :rules="emailRulesGlobal"
+                  disabled
                   variant="solo"
                   flat
                   density="comfortable"
@@ -321,11 +322,21 @@
         v-if="bManage"
         class="btn-second-red-global"
         color="red"
-        width="200px"
+        width="150px"
         :loading="bLoadingBtnRejected"
         @click="setRejectedStatusConfirm"
       >
         Rechazar restaurante
+      </v-btn>
+      <v-btn
+        v-if="bWrite || bManage"
+        class="btn-green-primary"
+        variant="flat"
+        width="150px"
+        :loading="bLoadingBtnAccepted"
+        @click="setAcceptedStatusConfirm"
+      >
+        Aprobar restaurante
       </v-btn>
       <v-spacer />
       <v-btn
@@ -333,21 +344,22 @@
         class="btn-green-primary-outlined"
         variant="outlined"
         color="green"
-        width="200px"
+        width="150px"
         :loading="bLoadingBtnResend"
         @click="setResendStatusConfirm"
       >
         Reenviar formulario
       </v-btn>
       <v-btn
-        v-if="bWrite || bManage"
-        class="btn-green-primary"
+        v-if="bManage || $store.user.bSuperAdmin"
+        class="btn-primary-global"
         variant="flat"
-        width="200px"
-        :loading="bLoadingBtnAccepted"
-        @click="setAcceptedStatusConfirm"
+        color="primary"
+        width="150px"
+        :loading="bLoadingBtnChange"
+        @click="setChange"
       >
-        Aprobar restaurante
+        Modificar solicitud
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -366,12 +378,11 @@ export default {
     iCountryCallingCodeRestaurant: 2,
     sPhoneNumberRestaurant: null,
     sPhoneExtensionRestaurant: null,
-    iStateRestaurant: null,
     sAddressRestaurant: null,
-    sZIPRestaurant: null,
     sAddressSpecificRestaurant: null,
     sCityRestaurant: null,
     iStateRestaurant: null,
+    sZIPRestaurant: null,
     sTextAddress: null,
     oLocaltion: {},
     dLocationLatitude: null,
@@ -400,6 +411,7 @@ export default {
     bLoadingBtnResend: false,
     bLoadingBtnDelete: false,
     bLoadingBtnRejected: false,
+    bLoadingBtnChange: false,
   }),
   computed: {
     // #region Variables de permisos
@@ -444,7 +456,6 @@ export default {
           `admissions/${this.sAdmissionId}`,
           payload
         );
-        console.log(oResult.data.admissionRequest, "admissionRequest");
         this.setFillData(oResult.data.admissionRequest);
         this.$store.table.setRefresh(false);
       } catch (error) {
@@ -456,7 +467,7 @@ export default {
       // #region restaurant
       this.sNameRestaurant = oItem.Establishment.sName;
       this.iCountryCallingCodeRestaurant =
-        oItem.Establishment.iCountryCallingCode;
+        oItem.Establishment.iCountryCallingCode ?? 2;
       this.sPhoneNumberRestaurant = oItem.Establishment.sPhoneNumber;
       if (this.sPhoneNumberRestaurant) {
         this.getFormatPhoneNumber("sPhoneNumberRestaurant");
@@ -472,6 +483,8 @@ export default {
         dLat: oItem.Establishment.dLocationLatitude ?? 0,
         dLng: oItem.Establishment.dLocationLongitude ?? 0,
       };
+      this.dLocationLatitude = oItem.Establishment.dLocationLatitude;
+      this.dLocationLongitude = oItem.Establishment.dLocationLongitude;
       // #endregion restaurant
 
       // #region Manager
@@ -486,7 +499,6 @@ export default {
       this.sCreatedAt = this.getFormatDDMMYYYY(new Date(oItem.User.tCreatedAt));
       this.bPlatformAccess = oItem.User.bPlatformAccess;
       this.aDocs = oItem.Documents;
-      console.log(this.aDocs, "aDocs");
       this.sStatus = oItem.eStatus;
       // #endregion Manager
     },
@@ -738,6 +750,60 @@ export default {
         this.bLoadingBtnAccepted = false;
       } catch (error) {
         this.bLoadingBtnAccepted = false;
+        this.$swal.fire({
+          title: "¡Error!",
+          text: error.response.data.message,
+          icon: "error",
+          confirmButtonText: "Cerrar",
+        });
+      }
+    },
+    async setChange() {
+      try {
+        this.bLoadingBtnChange = true;
+        const config = {
+            headers: {
+              Authorization: `Bearer ${this.$store.user.sToken}`,
+            },
+          },
+          payload = {
+            Establishment: {
+              sName: this.sNameRestaurant,
+              sPhoneNumber: this.sPhoneNumberRestaurant.replaceAll("-", ""),
+              sPhoneExtension: this.sPhoneExtensionRestaurant,
+              // México
+              iCountryCallingCode: this.iCountryCallingCodeRestaurant,
+              sLocationAddress: this.sAddressRestaurant,
+              sLocationAddressDetail: this.sAddressSpecificRestaurant,
+              sLocationAddressCity: this.sCityRestaurant,
+              // Nuevo León
+              iLocationAddressState: this.iStateRestaurant,
+              sLocationAddressZIPCode: this.sZIPRestaurant,
+              dLocationLatitude: this.dLocationLatitude,
+              dLocationLongitude: this.dLocationLongitude,
+            },
+            User: {
+              sName: this.sNameManager,
+              sLastName: this.sLastNameManager,
+              sPhoneNumber: this.sPhoneNumberManager,
+              sPhoneExtension: this.sPhoneExtensionManager,
+            },
+          };
+        const oResult = await this.$api.put(
+          `admissions/${this.sAdmissionId}`,
+          payload,
+          config
+        );
+        this.$swal.fire({
+          title: `Actualizado!`,
+          text: oResult.data.message,
+          icon: "success",
+          confirmButtonText: "Cerrar",
+        });
+        this.$store.table.setRefresh(true);
+        this.bLoadingBtnChange = false;
+      } catch (error) {
+        this.bLoadingBtnChange = false;
         this.$swal.fire({
           title: "¡Error!",
           text: error.response.data.message,

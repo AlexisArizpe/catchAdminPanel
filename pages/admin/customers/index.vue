@@ -57,16 +57,16 @@
 export default {
   data: () => ({
     aHeader: [
-      {
-        sText: "Última actividad",
-        title: "Última actividad",
-        sValue: "sLastActivity",
-        key: "sLastActivity",
-        sortable: false,
-        align: "center",
-        sClass: "global-header-table min-w-150px text-center",
-        sCellClass: "global-body-table text-center",
-      },
+      // {
+      //   sText: "Última actividad",
+      //   title: "Última actividad",
+      //   sValue: "sLastActivity",
+      //   key: "sLastActivity",
+      //   sortable: false,
+      //   align: "center",
+      //   sClass: "global-header-table min-w-150px text-center",
+      //   sCellClass: "global-body-table text-center",
+      // },
       {
         sText: "Consumidor",
         title: "Consumidor",

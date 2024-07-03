@@ -343,6 +343,7 @@ export default {
             ...e,
             sId: e.sBenefitId,
             sFolio: e.sFolio,
+            sDate:this.getFormatDDMMYYYY(new Date(e.tCreatedAt)),
             sBenefitsType: this.getBenefitTypeName(e.eBenefitType),
             sName: e.sName,
             sDescription: e.sDescription,

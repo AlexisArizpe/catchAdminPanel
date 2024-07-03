@@ -76,8 +76,8 @@
             >
               Fecha de cancelación:
               <span class="txt-info-date color-red-canceled-global">{{
-                oItem.aStatusRecords.find((e) => e.eStatus === "canceled")
-                  .sCreatedAtFormat
+                oItem.aStatusRecords?.find((e) => e.eStatus === "canceled")
+                  ?.sCreatedAtFormat ?? ""
               }}</span>
             </p>
             <!-- #endregion Cancelación -->
@@ -88,8 +88,8 @@
               Fecha de canjeo:
               <span class="txt-info-date">
                 {{
-                  oItem.aStatusRecords.find((e) => e.eStatus === "redeemed")
-                    .sCreatedAtFormat
+                  oItem.aStatusRecords?.find((e) => e.eStatus === "redeemed")
+                    ?.sCreatedAtFormat ?? ""
                 }}
               </span>
             </p>
@@ -97,8 +97,8 @@
               Canjeado por:
               <span class="txt-info-date">
                 {{
-                  oItem.aStatusRecords.find((e) => e.eStatus === "redeemed")
-                    .sFullName
+                  oItem.aStatusRecords?.find((e) => e.eStatus === "redeemed")
+                    ?.sFullName ?? ""
                 }}
               </span>
             </p>

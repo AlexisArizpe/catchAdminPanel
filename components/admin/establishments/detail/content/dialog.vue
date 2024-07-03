@@ -194,6 +194,11 @@ export default {
         sEmailManager: null,
         aDocs: [],
       },
+      oReservation: {
+        sCallNumber: null,
+        sReservationUrl: null,
+        sWhatsappNumber: null,
+      },
     },
 
     aCountry: [],
@@ -310,7 +315,6 @@ export default {
       }
     },
     setFillData(oItem) {
-      console.log(oItem, "oItem");
       this.aImg = [
         {
           sId: "123",
@@ -378,6 +382,16 @@ export default {
       this.oItem.oManager.sEmailManager =
         oItem.establishment.Administrator.sEmail;
       this.oItem.oManager.aDocs = oItem.establishment.Documents;
+
+      this.oItem.oReservation.sCallNumber = this.getFormatPhoneNumberGlobal(
+        oItem.establishment.ReservationData.sCallNumber
+      );
+      this.oItem.oReservation.sReservationUrl =
+        oItem.establishment.ReservationData.sReservationUrl;
+      this.oItem.oReservation.sWhatsappNumber = this.getFormatPhoneNumberGlobal(
+        oItem.establishment.ReservationData.sWhatsappNumber
+      );
+
     },
     async setChange() {
       try {
@@ -609,6 +623,11 @@ export default {
     },
   },
   watch: {
+    async iTab() {
+      await this.getCountries();
+      await this.getStates();
+      await this.getItem();
+    },
     async bRefresh() {
       await this.getCountries();
       await this.getStates();

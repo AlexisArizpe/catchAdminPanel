@@ -60,7 +60,7 @@
         "
         persistent
       >
-        <admin-customers-detail-benefit-detail-benefit-complete-content
+        <admin-customers-detail-benefit-detail-complete-content
           v-if="bCompleted"
           :sTypeBenefit="sTypeBenefit"
           :oItem="oItemDetail"
@@ -274,7 +274,6 @@ export default {
           `customers/${this.$route.params.id}`,
           payload
         );
-        console.log(oResult, "oResult");
         this.oItemCustomer = oResult.data.customer;
         this.sNameHeader = `${oResult.data.customer.User.sName} ${oResult.data.customer.User.sLastName}`;
 
@@ -300,7 +299,6 @@ export default {
           `customers/interactions/${this.$route.params.id}`,
           payload
         );
-        console.log(oResult.data.interactions);
         this.aItems = oResult.data.interactions.map((e, i) => {
           return {
             ...e,
@@ -321,27 +319,36 @@ export default {
               new Date(e.tUpdatedAt ?? e.tCreatedAt),
               true
             ),
-            aStatusRecords: [],
-            // aStatusRecords: e.StatusRecords.map((eRecord) => {
-            //   return {
-            //     eStatus: eRecord.eStatus,
-            //     sStatus: this.getBenefitStatusName(eRecord.eStatus),
-            //     sColorStatus: this.getBenefitStatusColors(eRecord.eStatus),
-            //     bPrice: eRecord.eStatus === "redeemed",
-            //     sPrice: e.dTicketAmount,
-            //     aLabelsInfo: this.getLabelInfo(e, eRecord),
-            //     sFullName: `${eRecord.CreatedBy?.sName ?? ""} ${
-            //       eRecord.CreatedBy?.sLastName ?? ""
-            //     }`,
-            //     sCreatedAtFormat: this.getFormatDDMMYYYY(
-            //       new Date(eRecord.tCreatedAt),
-            //       true
-            //     ),
-            //   };
-            // }).sort((a, b) => {
-            //   const statusOrder = { active: 1, completed: 2, redeemed: 3 };
-            //   return statusOrder[a.eStatus] - statusOrder[b.eStatus];
-            // }),
+            // aStatusRecords: [],
+            aStatusRecords:
+              e.StatusRecords.length > 0
+                ? e.StatusRecords.map((eRecord) => {
+                    return {
+                      eStatus: eRecord.eStatus,
+                      sStatus: this.getBenefitStatusName(eRecord.eStatus),
+                      sColorStatus: this.getBenefitStatusColors(
+                        eRecord.eStatus
+                      ),
+                      bPrice: eRecord.eStatus === "redeemed",
+                      sPrice: e?.dTicketAmount ?? 0,
+                      aLabelsInfo: this.getLabelInfo(e, eRecord),
+                      sFullName: `${eRecord.CreatedBy?.sName ?? ""} ${
+                        eRecord.CreatedBy?.sLastName ?? ""
+                      }`,
+                      sCreatedAtFormat: this.getFormatDDMMYYYY(
+                        new Date(eRecord.tCreatedAt),
+                        true
+                      ),
+                    };
+                  }).sort((a, b) => {
+                    const statusOrder = {
+                      active: 1,
+                      completed: 2,
+                      redeemed: 3,
+                    };
+                    return statusOrder[a.eStatus] - statusOrder[b.eStatus];
+                  })
+                : [],
             aRatings: [
               {
                 sLabel: "Producto",
@@ -429,6 +436,86 @@ export default {
         return this.getFormatDDMMYYYY(new Date(tDate), true);
       } else {
         return "";
+      }
+    },
+    getLabelInfo(oItem, oRecord) {
+      switch (oRecord.eStatus) {
+        case "active":
+          return [
+            {
+              sLabel: "Fecha de activación: ",
+              sResult: this.getFormatDDMMYYYY(
+                new Date(
+                  oItem.StatusRecords.find(
+                    (e) => e.eStatus === "active"
+                  )?.tCreatedAt
+                ) ?? new Date(),
+                true
+              ),
+            },
+            {
+              sLabel: "Fecha de revserva: ",
+              sResult: this.getFormatDDMMYYYY(
+                new Date(oItem.tDate ?? new Date()),
+                true
+              ),
+            },
+          ];
+        case "canceled":
+          return [];
+        case "completed":
+          return [
+            {
+              sLabel: "Fecha de finalización: ",
+              sResult: this.getFormatDDMMYYYY(
+                new Date(
+                  oItem.StatusRecords.find(
+                    (e) => e.eStatus === "completed"
+                  )?.tCreatedAt
+                ) ?? new Date(),
+                true
+              ),
+            },
+          ];
+        case "incompleted":
+          return [
+            {
+              sLabel: "Fecha de finalización: ",
+              sResult: this.getFormatDDMMYYYY(
+                new Date(
+                  oItem.StatusRecords.find(
+                    (e) => e.eStatus === "incompleted"
+                  )?.tCreatedAt
+                ) ?? new Date(),
+                true
+              ),
+            },
+          ];
+        case "redeemed":
+          return [
+            {
+              sLabel: "Fecha de canjeo: ",
+              sResult: this.getFormatDDMMYYYY(
+                new Date(
+                  oItem.StatusRecords.find(
+                    (e) => e.eStatus === "redeemed"
+                  )?.tCreatedAt
+                ) ?? new Date(),
+                true
+              ),
+            },
+            {
+              sLabel: "Canjeado por: ",
+              sResult:
+                oItem.StatusRecords.find((e) => e.eStatus === "redeemed")
+                  .CreatedBy.sName +
+                " " +
+                oItem.StatusRecords.find((e) => e.eStatus === "redeemed")
+                  .CreatedBy.sLastName,
+            },
+          ];
+        default:
+          return [];
       }
     },
     setSearch(sSearch) {

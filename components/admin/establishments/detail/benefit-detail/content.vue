@@ -37,6 +37,16 @@
               >
                 <span :class="sIconBenefitType"></span>
               </div>
+
+              <!-- #region (Regular) Tag de reserva de mesa -->
+              <div
+                v-if="bReservation && !bDouble"
+                class="content-reservation-all"
+              >
+                <Icon class="icon-reservation" icon="solar:calendar-linear" />
+              </div>
+              <!-- #endregion (Regular) Tag de reserva de mesa -->
+
               <div
                 v-if="!bLightning && !bDouble"
                 :class="sColorStatus"
@@ -977,6 +987,7 @@ export default {
         bSelected: true,
       },
     ],
+    bReservation: false,
     sTime: "",
     aTime: [
       {
@@ -1098,7 +1109,6 @@ export default {
     if (this.oItem) {
       await this.getCategories();
       this.setFillData(this.oItem);
-      console.log(this.oItem, "this.oItem");
       // await this.getItem();
     }
   },
@@ -1143,6 +1153,7 @@ export default {
         this.sDescription = oItem.sDescription;
         this.eBenefitType = oItem.eBenefitType;
         this.sBenefitCategoryId = oItem.BenefitCategory.sBenefitCategoryId;
+        this.bReservation = oItem.bWithReservation;
 
         this.sBenefitCategory = this.aBenefitCategory.find(
           (e) => e.sId === oItem.BenefitCategory.sBenefitCategoryId
@@ -1228,9 +1239,7 @@ export default {
         let aStartHourTemp = this.getHours(new Date(oItem.tStartDate)).split(
           ":"
         );
-        console.log(aStartHourTemp);
         let aEndHourTemp = this.getHours(new Date(oItem.tEndDate)).split(":");
-        console.log(aEndHourTemp);
         this.tStartTime = {
           hours: Number(aStartHourTemp[0]),
           minutes: Number(aStartHourTemp[1]),
@@ -1825,6 +1834,27 @@ export default {
   width: 50px;
   height: 30px;
   font-size: 1.2rem;
+}
+
+.content-reservation-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  background-color: var(--global-color-black);
+  border: solid 1px var(--global-color-white);
+  z-index: 1;
+  left: 70px;
+  top: 10px;
+  width: 50px;
+  height: 30px;
+  font-size: 1.2rem;
+  border-radius: 20px;
+  padding: 3px;
+}
+.icon-reservation {
+  color: var(--global-color-white);
+  font-size: 1.4rem;
 }
 .icon-info-general {
   position: absolute;

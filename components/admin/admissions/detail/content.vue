@@ -261,7 +261,6 @@ export default {
           `administrators/${this.sAdmissionId}`,
           payload
         );
-        console.log(oResult.data.user, "oResult");
         this.setFillData(oResult.data.user);
         this.$store.table.setRefresh(false);
       } catch (error) {

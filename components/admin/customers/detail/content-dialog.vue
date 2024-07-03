@@ -216,7 +216,6 @@ export default {
           `customers/${this.sCustomerId}`,
           payload
         );
-        console.log(oResult.data.customer, "oResult");
         this.setFillData(oResult.data.customer);
         this.$store.table.setRefresh(false);
       } catch (error) {
@@ -423,8 +422,9 @@ export default {
           icon: "success",
           confirmButtonText: "Cerrar",
         });
-        this.$store.table.setRefresh(true);
         this.setCloseDialog();
+        this.$router.push({ name: "admin-customers" });
+        // this.$store.table.setRefresh(true);
         this.bLoadingBtnDelete = false;
       } catch (error) {
         this.$swal.fire({

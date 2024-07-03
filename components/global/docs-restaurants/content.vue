@@ -160,7 +160,6 @@ export default {
     // #region Upload Doc
     setFillDoc() {
       if (this.sTypeModule === "edit") {
-        console.log(this.aDocs, "aDocs");
         this.aDocsEdit = this.aDocs;
       }
     },
@@ -168,7 +167,6 @@ export default {
       // const oDoc = this.aDocuments.find(
       //   (e) => e.sId === oDocAddItems.oItem.sId
       // );
-      console.log(oDocAddItems.name, "oDocAddItems");
       this.aDocsEdit.push({
         sId: this.getIdRandomGlobal(),
         sName: oDocAddItems.name,
@@ -191,7 +189,6 @@ export default {
     aDocs: {
       deep: true, // Observar cambios profundos en el arreglo
       handler(newVal) {
-        console.log(newVal, "newVal");
         this.setFillDoc();
       },
     },

@@ -25,6 +25,9 @@
       <template v-slot:item.sFolio="{ item }">
         <span class="w-s-nowrap">{{ item.sFolio }}</span>
       </template>
+      <template v-slot:item.sDate="{ item }">
+        <span class="w-s-nowrap">{{ item.sDate }}</span>
+      </template>
       <template v-slot:item.sStatus="{ item }">
         <div class="d-flex justify-center">
           <div

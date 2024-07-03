@@ -251,10 +251,16 @@ export default {
             ),
             sEmail: e.sEmail,
             bPlatformAccess: e.bPlatformAccess,
-            sPlatformAccess: e.bPlatformAccess ? "Permitido" : "Bloqueado",
+            sPlatformAccess:
+              !e.bPlatformAccess && !e.bVerified
+                ? "Pendiente"
+                : !e.bPlatformAccess && e.bVerified
+                ? "Bloqueado"
+                : "Permitido",
           };
         });
-        this.iNumPage = oResult.data.iNumPages === 0 ? 1 : oResult.data.iNumPages;
+        this.iNumPage =
+          oResult.data.iNumPages === 0 ? 1 : oResult.data.iNumPages;
         this.iTotal = oResult.data.iTotal;
         this.bLoadingItems = false;
         this.$store.table.setRefresh(false);

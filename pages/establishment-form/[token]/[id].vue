@@ -2,14 +2,28 @@
   <div>
     <NuxtLayout name="initial">
       <div class="content-form-initial">
-        <div class="content-form-initial-title-global">
+        <div v-if="bFormSend" class="content-message-all">
+          <div class="content-icon-message-global">
+            <Icon
+              icon="lets-icons:check-ring-light"
+              class="icon-message-global"
+            />
+          </div>
+          <p class="txt-title-message-global">¡Listo!</p>
+          <p class="txt-description-message-global">
+            Tu información fue incluida en tu solicitud con éxito. <br />
+            ¡Pronto nos pondremos en contacto contigo!
+          </p>
+        </div>
+
+        <div v-if="!bFormSend" class="content-form-initial-title-global">
           <span class="txt-initial-global"
             >Formulario de suscripción
             <span class="txt-sub-initial-global">Completa tus datos</span></span
           >
         </div>
 
-        <div class="content-form-inputs">
+        <div v-if="!bFormSend" class="content-form-inputs">
           <v-form ref="form">
             <div class="content-restaurant-user-data-all">
               <v-row class="content-restaurant-data-all ma-0">
@@ -201,14 +215,14 @@
           </v-form>
         </div>
 
-        <div class="content-form-initial-btns-global">
+        <div v-if="!bFormSend" class="content-form-initial-btns-global">
           <v-btn
             @click="setChange()"
             class="btn-primary-global"
             block
             :loading="bLoading"
           >
-            Eviar formulario
+            Enviar formulario
           </v-btn>
         </div>
       </div>
@@ -249,6 +263,7 @@ export default {
       places: [],
       loader: null,
       bLoading: false,
+      bFormSend: false,
     };
   },
   computed: {
@@ -370,11 +385,11 @@ export default {
           this.bLoading = true;
           const config = {
               headers: {
-                Authorization: `Bearer ${this.sToken}`,
+                // Authorization: `Bearer ${this.sToken}`,
               },
             },
             payload = {
-              //   sToken: this.sToken,
+              sToken: this.sToken,
               Establishment: {
                 sName: this.sPublicNameRestaurant,
                 sPhoneNumber: this.sPhoneNumberRestaurant
@@ -406,13 +421,13 @@ export default {
             config
           );
 
-          this.$swal.fire({
-            title: "¡Listo!",
-            text: oResult.data.message,
-            icon: "success",
-            confirmButtonText: "Cerrar",
-          });
-
+          // this.$swal.fire({
+          //   title: "¡Listo!",
+          //   text: oResult.data.message,
+          //   icon: "success",
+          //   confirmButtonText: "Cerrar",
+          // });
+          this.bFormSend = true;
           this.bLoading = false;
         }
       } catch (error) {

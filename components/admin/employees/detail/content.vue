@@ -158,6 +158,7 @@
         </div>
       </div>
     </v-card-text>
+
     <v-card-actions class="content-actions-add">
       <v-btn
         v-if="$store.user.bSuperAdmin"
@@ -170,8 +171,9 @@
       >
         Eliminar empleado
       </v-btn>
+
       <v-btn
-        v-if="$store.user.bSuperAdmin"
+        v-if="(bManage || $store.user.bSuperAdmin) && bVerified"
         class="btn-second-red-global"
         color="red"
         width="220px"
@@ -216,6 +218,7 @@ export default {
     sCreatedAt: null,
     sCreatedName: null,
     bPlatformAccess: null,
+    bVerified: null,
     aPermissions: [],
     bLoadingBtnAdd: false,
     bLoadingBtnDelete: false,
@@ -261,7 +264,6 @@ export default {
           `administrators/${this.sUserId}`,
           payload
         );
-        console.log(oResult.data.user, "oResult");
         this.setFillData(oResult.data.user);
         this.$store.table.setRefresh(false);
       } catch (error) {
@@ -280,6 +282,7 @@ export default {
       this.sCreatedAt = this.getFormatDDMMYYYY(new Date(oItem.tCreatedAt));
       this.sCreatedName = `${oItem.Administrator.CreatedBy.sName} ${oItem.Administrator.CreatedBy.sLastName}`;
       this.bPlatformAccess = oItem.bPlatformAccess;
+      this.bVerified = oItem.bVerified;
 
       this.aPermissions = oItem.Administrator.Permissions.map((e) => {
         return {
