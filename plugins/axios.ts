@@ -6,7 +6,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   
   // create axios instance as api
   let api = axios.create({
-    baseURL: "https://api.catchapp.mx/alfa/api/v1/sp/",
+    baseURL: "https://api.catchapp.mx/beta/api/v1/sp/",
     headers: {
       common: {},
     },
