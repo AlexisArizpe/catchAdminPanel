@@ -14,6 +14,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     let sCreatedBy = oResult.data.user.Administrator.CreatedBy;
     useUserStore().setSuperAdmin(sCreatedBy === null ? true : false);
     if (bSuperAdmin) {
+      usePermissionsStore().setActionPermission(undefined);
       if (sRouteName === undefined || sRouteName === 'index' || sRouteName === 'login' || sRouteName === 'password-recovery') {
         return navigateTo('/admin/dashboard')
       }
