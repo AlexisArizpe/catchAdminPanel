@@ -16,19 +16,45 @@
     <template v-slot:append>
       <div class="content-append-header-all">
         <div class="content-redeem-benefit-header">
-          <!-- <v-btn
-            v-if="bRedeemBenefit"
-            @click="setDialogRedeemBenefit"
-            color="primary"
-            class="btn-primary-global btn-redeem-benefit"
-            variant="elevated"
-          >
-            <v-icon :class="!bMobile ? 'mr-3' : ''">
-              mdi mdi-scan-helper</v-icon
-            >
-            {{ !bMobile ? "Canjear beneficio" : "" }}
-          </v-btn> -->
-
+          <div v-if="bShowRangeDate" class="content-date-range-text-field">
+            <v-menu>
+              <template v-slot:activator="{ props }">
+                <div v-bind="props">
+                  <v-text-field
+                    v-model="sDateRangeFormat"
+                    readonly
+                    density="compact"
+                    variant="outlined"
+                    flat
+                    color="primary"
+                    bg-color="white"
+                    label="Rango de fecha"
+                    placeholder="Seleccionar rango de fecha"
+                    hide-details
+                    clearable
+                    prepend-inner-icon="mdi mdi-calendar-range"
+                    rounded="lg"
+                  ></v-text-field>
+                </div>
+              </template>
+              <v-card>
+                <vue-date-picker
+                  class="date-picker-global"
+                  v-model="aDateRange"
+                  range
+                  disable-time-range-validation
+                  inline
+                  auto-apply
+                  locale="es"
+                  :enable-time-picker="false"
+                  placeholder="horario"
+                />
+                <div class="content-btns-date-picker-global">
+                  <v-btn class="btn-second-global"> Cerrar </v-btn>
+                </div>
+              </v-card>
+            </v-menu>
+          </div>
           <dialogs-redeem-benefit v-model="bDialogRedeemBenefit" />
         </div>
         <navbar-btn-user-profile />
@@ -61,7 +87,11 @@ export default {
   },
   data: () => ({
     bDialogRedeemBenefit: false,
+    aShowRangeDate: ["admin-dashboard"],
+    aDateRange: null,
+    sDateRangeFormat: null,
   }),
+  emits: ["setDateRange"],
   computed: {
     // #region Variables de permisos
     sActionPermission() {
@@ -107,6 +137,11 @@ export default {
     sEstablishmentName() {
       return this.$store.user.sEstablishmentName;
     },
+    bShowRangeDate() {
+      return (
+        this.aShowRangeDate.filter((e) => e === this.$route.name).length > 0
+      );
+    },
   },
   methods: {
     setAdd() {
@@ -119,6 +154,25 @@ export default {
     setDialogRedeemBenefit() {
       // this.$store.message.success("Holaaaa Hola");
       this.bDialogRedeemBenefit = !this.bDialogRedeemBenefit;
+    },
+  },
+  watch: {
+    aDateRange() {
+      if (this.aDateRange) {
+        let sStart = this.getFormatDDMMYYYY(this.aDateRange[0]);
+        let sEnd = this.getFormatDDMMYYYY(this.aDateRange[1]);
+        this.sDateRangeFormat = `${sStart} - ${sEnd}`;
+      } else {
+        this.sDateRangeFormat = null;
+        this.aDateRange = null;
+      }
+      console.log(this.aDateRange,"aDateRange")
+      this.$emit("setDateRange", this.aDateRange);
+    },
+    sDateRangeFormat() {
+      if (this.sDateRangeFormat === null) {
+        this.aDateRange = null;
+      }
     },
   },
 };
@@ -173,6 +227,10 @@ export default {
 
 .btn-redeem-benefit {
   width: 230px !important;
+}
+
+.content-date-range-text-field{
+  min-width: 270px;
 }
 
 /*#region MODO RESPONSIVO MAQUETA */
