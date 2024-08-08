@@ -23,7 +23,7 @@ export const useMenuStore = defineStore('menu', {
             // #region Pagos
             {
                 sId: "1a4d2c35-a282-486d-b1ef-da34f0573511",
-                sIcon: "ep:dish",
+                sIcon: "fluent:payment-32-regular",
                 sName: "Pagos",
                 sActions: null,
                 sRoute: "admin-payments",
@@ -36,7 +36,7 @@ export const useMenuStore = defineStore('menu', {
             // #region Restaurantes
             {
                 sId: "6f558dad-0fdd-43a4-9a13-1c8e04817099",
-                sIcon: "fluent:payment-32-regular",
+                sIcon: "ep:dish",
                 sName: "Restaurantes",
                 sActions: null,
                 sRoute: "admin-establishments",

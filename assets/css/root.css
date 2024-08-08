@@ -12,9 +12,9 @@
   --global-color-black-transparent-primary: rgba(0, 0, 0, 0.5);
   --global-color-yellow-primary: #fcf538;
   --global-color-green-btn: #86c157;
-  --global-color-grey-btn: #DBDBDB;
+  --global-color-grey-btn: #dbdbdb;
   --global-color-grey-text: #b6b5b5;
-  --global-color-orange: #FF8A00;
+  --global-color-orange: #ff8a00;
   --global-color-green: #86c157;
   --global-color-red: #c62c2c;
   --global-color-red-canceled: #c62c2c;
@@ -27,4 +27,10 @@
   --global-color-status-published: #86c157;
   --global-color-status-finalized: #86c157;
   --global-color-status-cancelled: #c62c2c;
+
+  --global-color-blue-card: #34c4ff;
+  --global-color-orange-card: #ff8a00;
+  --global-color-red-card: #c62c2c;
+  --global-color-green-card: #86c157;
+  --global-color-yellow-card: #fcf538;
 }

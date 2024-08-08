@@ -260,29 +260,26 @@ body {
 }
 /* #endregion expand */
 
-
 /* #region content message global */
-.content-message-all{
-  
+.content-message-all {
 }
-.content-icon-message-global{
+.content-icon-message-global {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.icon-message-global{
+.icon-message-global {
   font-size: 4.5rem;
   margin-bottom: 10px;
 }
-.txt-title-message-global{
+.txt-title-message-global {
   font-size: 1.2rem;
   font-weight: bold;
   text-align: center;
   margin-bottom: 10px;
 }
-.txt-description-message-global{
+.txt-description-message-global {
   text-align: center;
-
 }
 /* #endregion content message global */
 
@@ -292,6 +289,21 @@ body {
 }
 .bg-color-white-global {
   background-color: var(--global-color-white) !important;
+}
+.bg-color-blue-card-global {
+  background-color: var(--global-color-blue-card) !important;
+}
+.bg-color-orange-card-global {
+  background-color: var(--global-color-orange-card) !important;
+}
+.bg-color-red-card-global {
+  background-color: var(--global-color-red-card) !important;
+}
+.bg-color-green-card-global {
+  background-color: var(--global-color-green-card) !important;
+}
+.bg-color-yellow-card-global {
+  background-color: var(--global-color-yellow-card) !important;
 }
 .bg-color-red-canceled-global {
   background-color: #e59e9e !important;
@@ -475,7 +487,6 @@ body {
   color: var(--global-color-black) !important;
   font-size: 1.3rem !important;
   box-shadow: none !important;
-
 }
 /* #endregion btns global */
 

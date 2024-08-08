@@ -7,7 +7,7 @@
       <div class="content-img-catch-yellow">
         <img
           class="img-catch-yellow"
-          src="/img/Catch_Logotipo_RGB Amarillo_Positivo_RGB.svg"
+          src="/img/Catch-Logotipo-Amarillo.svg"
         />
       </div>
     </div>
