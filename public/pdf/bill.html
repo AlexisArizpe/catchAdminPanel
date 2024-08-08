@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet"
+  />
+    <title>Factura</title>
+  </head>
+  <body>
+    <!-- #region Page Initial -->
+    <main class="content-pdf-all">
+      <div class="content-pdf">
+        <div class="content-general-info-all-pdf">
+          <div class="content-left-pdf">
+            <p class="txt-catch-pdf">Catch</p>
+            <p class="txt-result-pdf">Razón social de Catch</p>
+            <p class="txt-result-pdf">Dirección de facturación de Catch</p>
+            <p class="txt-result-pdf">Correo electrónico de Catch</p>
+            <p class="txt-result-pdf">Número de teléfono de contacto de catch</p>
+
+            <p class="txt-public-name">Nombre público del cliente</p>
+            <div class="divider-pdf"></div>
+            <p class="txt-result-pdf">{{contentHtml.oEstablishment.sBusinessName}}</p>
+            <p class="txt-result-pdf">
+              {{contentHtml.oEstablishment.sBillingFullAddress}}
+            </p>
+            <p class="txt-result-pdf">
+              {{contentHtml.oEstablishment.sBillingEmail}}
+            </p>
+            <p class="txt-result-pdf">
+              {{contentHtml.oEstablishment.sPhoneNumber}}
+            </p>
+          </div>
+          <div class="content-rigth-pdf">
+            <div class="content-img-all-pdf">
+              <img class="img-pdf" src="/img/Catch-Logotipo-Amarillo.png"/>
+            </div>
+
+            <p class="txt-title-pdf">Recibo de pago:</p>
+            <p class="txt-result-pdf">{{contentHtml.oPayment.sStripePaymentId}}</p>
+
+            <p class="txt-title-pdf">Fecha de emisión:</p>
+            <p class="txt-result-pdf">{{contentHtml.oPayment.sDateIssue}} </p>
+
+            <p class="txt-title-pdf">Pago:</p>
+            <p class="txt-result-pdf">{{contentHtml.oPayment.eStatus}} - {{contentHtml.oPayment.sBrand}} *{{contentHtml.oPayment.sLast4}}</p>
+          </div>
+        </div>
+        <div class="content-table-pdf-all">
+            <table class="table-pdf">
+              <thead>
+                <tr>
+                  <th class="text-center">Concepto</th>
+                  <th class="text-center">Cantidad</th>
+                  <th class="text-center">Precio</th>
+                  <th class="text-center">Total</th>
+                </tr>
+                <thead>
+                <tbody>
+                  <tr>
+                    <td class="text-center">{{contentHtml.oPayment.sConcept}}</td>
+                    <td class="text-center">{{contentHtml.oPayment.dQuantity}}</td>
+                    <td class="text-center">$ {{contentHtml.oPayment.sPrice}} MXN</td>
+                    <td class="text-center">$ {{contentHtml.oPayment.sTotalPrice}} MXN</td>
+                  </tr>
+                </tbody>
+              </table>
+          <div class="content-footer-table-pdf">
+            <p class="mt-0 mb-10 txt-footer-table-pdf">Total (MXN)</p>
+            <p class="mt-0 mb-10 txt-footer-table-pdf">${{contentHtml.oPayment.sTotalPrice}} MXN</p>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- #endregion Pagina Initial -->
+  </body>
+
+  <style scoped>
+    body {
+      margin: 0;
+    }
+    * {
+      font-family: "Roboto", sans-serif;
+    }
+
+    /* #region fonts  */
+    @font-face {
+      font-family: "Roboto Regular";
+      src: url("/assets/fonts/Roboto/Roboto-Regular.ttf") format("opentype");
+    }
+    .txt-bold-pdf{
+      font-family: "Roboto Bold";
+    }
+    @font-face {
+      font-family: "Roboto Bold";
+      src: url("/assets/fonts/Roboto/Roboto-Bold.ttf") format("opentype");
+    }
+    @font-face {
+      font-family: "Roboto Medium";
+      src: url("/assets/fonts/Roboto/Roboto-Medium.ttf") format("opentype");
+    }
+    @font-face {
+      font-family: "Roboto Light";
+      src: url("/assets/fonts/Roboto/Roboto-Light.ttf") format("opentype");
+    }
+    /* #endregion fonts  */
+
+    .content-pdf-all {
+      padding: 20px;
+      width: 210mm;
+      height: 296.5mm;
+    }
+    .content-pdf {
+      border: 1px solid black;
+      height: 100%;
+      width: 100%;
+      padding: 20px;
+    }
+    .content-general-info-all-pdf{
+      display: flex;
+      gap: 3rem;
+    }
+    .content-left-pdf{
+      width: 60%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .content-rigth-pdf{
+      width: 40%;
+    }
+    .content-img-all-pdf{
+      background-color: black;
+      height: 270px;
+      margin-bottom: 20px;
+    }
+    .img-pdf{
+      height: 100%;
+      width: 100%;
+    }
+
+    /* #region table  */
+
+    .table-pdf {
+      margin-top: 50px;
+      overflow: hidden;
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      margin-bottom: 10px;
+    }
+  .table-pdf thead th {
+      font-family: "Roboto Medium", sans-serif;
+      padding: 4px 10px;
+      font-size: .8em;
+      color: #ffffff;
+      background-color: #c6c6c6;
+      border: 1px solid #c6c6c6;
+    }
+    .table-pdf tbody td {
+      padding: 4px 10px;
+      font-size: .7em;
+      border: 1px solid #c6c6c6;
+    }
+    .txt-limit {            
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 3; /* Número de líneas a mostrar */
+      -webkit-box-orient: vertical;
+    }
+    .content-footer-table-pdf {
+      display: flex;
+      justify-content: space-between;
+      padding: 0px 10px;
+    }
+    .txt-footer-table-pdf{
+      font-weight: 900;
+      font-weight: 900;
+      font-size: .9em;
+    }
+    /* #endregion table  */
+
+
+    /* #region txt style */
+    .txt-catch-pdf{
+      margin: 0px 0px 15px;
+      line-height: normal;
+      letter-spacing: normal;
+      font-size: 2.5em;
+      font-weight: 900;
+      font-weight: 900;
+
+    }
+    .txt-title-pdf{
+      margin: 0px 0px 3px;
+      font-size: .8em;
+      font-weight: 900;
+    }
+    .txt-result-pdf{
+      margin: 0px 0px 10px;
+      font-size: .8em;
+      font-weight: 300;
+      font-style: italic;
+    }
+    .txt-public-name{
+      margin: 0px 0px 3px;
+      font-size: 1.1em;
+      font-weight: 900;
+
+    }
+    /* #endregion txt style */
+
+    /* #region Global style */
+    .divider-pdf{
+      height: 1px;
+      width: 100%;
+      background-color: black;
+      border: none;
+      margin-bottom: 20px;
+    }
+
+    .mt-5{
+      margin-top: 5px;
+    }
+    .mt-0{
+      margin-top: 0px;
+    }
+    .mb-10{
+      margin-bottom: 0px;
+    }
+    .w-100px{
+      width: 100px;
+    }
+    /* #endregion Global style */
+
+  </style>
+</html>

@@ -2,6 +2,7 @@
   <v-app>
     <nuxt-page />
     <dialogs-message v-model="bDetail" />
+    <overlay />
   </v-app>
 </template>
 <script>

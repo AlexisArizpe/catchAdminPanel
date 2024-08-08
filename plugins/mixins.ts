@@ -10,7 +10,22 @@ const myMixin = {
     data: () => ({
         sLoadingTxtGlobal: "Cargando Información...",
         sEmptyTxtGlobal: "No hay información disponible para mostrar.",
+        sEmptyRowGlobal: "No hay información.",
         sAPIGlobal: "https://api.catchapp.mx/dev/api/v1/sp",
+        aMonths: [
+            'Enero',
+            'Febrero',
+            'Marzo',
+            'Abril',
+            'Mayo',
+            'Junio',
+            'Julio',
+            'Agosto',
+            'Septiembre',
+            'Octubre',
+            'Noviembre',
+            'Diciembre',
+        ] as string[],
         codeRulesGlobal: [
             (v: any) => !!v || "El codigo es requerido",
             (v: any) =>
@@ -748,6 +763,69 @@ const myMixin = {
                     };
             }
         },
+        getStatusColorPayment(sStatus: String) {
+            switch (sStatus) {
+
+                case "completed":
+                    return {
+                        ['background-color']: "#86C157",
+                        color: "#FFFFFF"
+                    };
+                case "pending":
+                    return {
+                        ['background-color']: "#ffea00",
+                        color: "#000000"
+                    };
+                case "failed":
+                    return {
+                        ['background-color']: "#FFC2C2",
+                        color: "#C62C2C"
+                    };
+                default:
+                    return {
+                        ['background-color']: "#C62C2C",
+                        color: "#FFFFFF"
+                    };
+            }
+        },
+        getPaymentStatusName(sName: String) {
+            switch (sName) {
+                case "completed":
+                    return "Completado";
+                case "pending":
+                    return "Pendiente";
+                case "failed":
+                    return 'Fallida'
+                default:
+                    break;
+            }
+        },
+        getTitleCaseGlobal(sTitle: String) {
+            return sTitle[0].toUpperCase() + sTitle.substring(1).toLowerCase()
+        },
+        getMonthGlobal(iMonth: number): string | undefined {
+            return this.aMonths.find((_, i) => i === iMonth);
+        },
+        getNameDaysGlobal(sDays: String) {
+            switch (sDays) {
+                case 'sunday':
+                    return 'Domingo';
+                case 'monday':
+                    return 'Lunes';
+                case 'tuesday':
+                    return 'Martes';
+                case 'wednesday':
+                    return 'Miércoles';
+                case 'thursday':
+                    return 'Jueves';
+                case 'friday':
+                    return 'Viernes';
+                case 'saturday':
+                    return 'Sábado';
+                default:
+                    return sDays;
+            }
+        }
     }
 };
 

@@ -60,6 +60,82 @@
           </template>
         </v-text-field>
       </div>
+      <div v-if="bShowRangeDate" class="content-date-range-text-field">
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <div v-bind="props">
+              <v-text-field
+                v-model="sDateRangeFormat"
+                readonly
+                density="compact"
+                variant="outlined"
+                flat
+                color="primary"
+                bg-color="white"
+                label="Fecha"
+                placeholder="Seleccionar fecha"
+                hide-details
+                clearable
+                prepend-inner-icon="mdi mdi-calendar-range"
+                rounded="lg"
+              ></v-text-field>
+            </div>
+          </template>
+          <v-card>
+            <vue-date-picker
+              class="date-picker-global"
+              v-model="aDateRange"
+              range
+              disable-time-range-validation
+              inline
+              auto-apply
+              locale="es"
+              placeholder="horario"
+            />
+            <div class="content-btns-date-picker-global">
+              <v-btn class="btn-second-global"> Cerrar </v-btn>
+            </div>
+          </v-card>
+        </v-menu>
+      </div>
+      <div v-if="bShowDate" class="content-date-range-text-field">
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <div v-bind="props">
+              <v-text-field
+                v-model="sDateFormat"
+                readonly
+                density="compact"
+                variant="outlined"
+                flat
+                color="primary"
+                bg-color="white"
+                label="Fecha"
+                placeholder="Seleccionar fecha"
+                hide-details
+                clearable
+                prepend-inner-icon="mdi mdi-calendar-range"
+                rounded="lg"
+              ></v-text-field>
+            </div>
+          </template>
+          <v-card>
+            <vue-date-picker
+              class="date-picker-global"
+              v-model="sDate"
+              month-picker
+              disable-time-range-validation
+              inline
+              auto-apply
+              locale="es"
+              placeholder="horario"
+            />
+            <div class="content-btns-date-picker-global">
+              <v-btn class="btn-second-global"> Cerrar </v-btn>
+            </div>
+          </v-card>
+        </v-menu>
+      </div>
       <div v-if="bShowSearchAbacus" class="content-search-abacus">
         <v-btn class="btn-second-global" color="black" variant="outlined">
           <span class="mdi mdi-filter-variant icon-filter-variant"></span
@@ -141,8 +217,15 @@ export default {
       "admin-employees",
     ],
     aShowSearchAbacus: ["admin-benefits"],
+    aShowRangeDate: ["admin-dashboard"],
+    aDateRange: null,
+    sDateRangeFormat: null,
+
+    aShowDate: ["admin-payments"],
+    sDate: null,
+    sDateFormat: null,
   }),
-  emits: ["setItemsPerPage", "setPage", "setSearch"],
+  emits: ["setItemsPerPage", "setPage", "setSearch", "setDateRange", "setDate"],
   computed: {
     bMobile() {
       return this.$vuetify.display.xs;
@@ -156,6 +239,14 @@ export default {
       return (
         this.aShowSearchText.filter((e) => e === this.$route.name).length > 0
       );
+    },
+    bShowRangeDate() {
+      return (
+        this.aShowRangeDate.filter((e) => e === this.$route.name).length > 0
+      );
+    },
+    bShowDate() {
+      return this.aShowDate.filter((e) => e === this.$route.name).length > 0;
     },
   },
   beforeMount() {
@@ -186,6 +277,40 @@ export default {
   watch: {
     sSearch() {
       this.$emit("setSearch", this.sSearch);
+    },
+    aDateRange() {
+      if (this.aDateRange) {
+        let sStart = this.getFormatDDMMYYYY(this.aDateRange[0]);
+        let sEnd = this.getFormatDDMMYYYY(this.aDateRange[1]);
+        this.sDateRangeFormat = `${sStart} - ${sEnd}`;
+      } else {
+        this.sDateRangeFormat = null;
+        this.aDateRange = null;
+      }
+      this.$emit("setDateRange", this.aDateRange);
+    },
+    sDateRangeFormat() {
+      if (this.sDateRangeFormat === null) {
+        this.aDateRange = null;
+      }
+    },
+
+    sDate() {
+      if (this.sDate) {
+        this.sDateFormat = `${this.getMonthGlobal(this.sDate.month)} - ${
+          this.sDate.year
+        }`;
+      } else {
+        this.sDateFormat = null;
+        this.sDate = null;
+      }
+      this.$emit("setDate", this.sDate);
+    },
+    sDateFormat() {
+      if (this.sDateFormat === null) {
+        this.sDate = null;
+        this.$emit("setDate", null);
+      }
     },
     iItemsPerPage() {
       this.setItemsPerPage();
@@ -261,6 +386,9 @@ export default {
 }
 .content-search-text-field {
   width: 250px;
+}
+.content-date-range-text-field {
+  min-width: 270px;
 }
 
 .icon-filter-variant {

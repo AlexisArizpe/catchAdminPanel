@@ -2,24 +2,71 @@
   <div class="content-page-all">
     <NuxtLayout name="panel">
       <!-- <google-map @location-changed="updateLocation" /> -->
-      <headers-header sNameHeader="Gestor de pagos" />
+      <headers-header sNameHeader="Pagos" />
 
-      <coming-soon-content />
+      <!-- v-if="$store.user.bSuperAdmin" -->
+      <!-- :bBtnAdd="bWrite || bManage" -->
+      <admin-payments-general-search-content
+        v-if="false"
+        @setSearch="setSearch"
+        @serAddItem="serAddItem"
+        sNameBtnAdd=""
+        toAdd=""
+        sTypeToAdd="dialog"
+        :bBtnAdd="false"
+        sIconBtnAdd="mdi mdi-plus"
+      />
+
+      <div class="content-general-global pt-5">
+        <admin-payments-general-cards
+          v-if="bMobile"
+          :aHeader="aHeader"
+          :bLoadingItems="bLoadingItems"
+          :aItems="aItems"
+          :iNumPage="iNumPage"
+          :iTotal="iTotal"
+          :aActionsTableCard="aActionsTableCard"
+          @setItemsPerPage="setItemsPerPage"
+          @setPage="setPage"
+          @setSearch="setSearch"
+          @setDate="setDate"
+          @setDeleteItem="setDeleteItem"
+          @setDetailItem="setDownloadItem"
+        />
+
+        <admin-payments-general-table
+          v-else
+          :aHeader="aHeader"
+          :bLoadingItems="bLoadingItems"
+          :aItems="aItems"
+          :iNumPage="iNumPage"
+          :iTotal="iTotal"
+          :aActionsTableCard="aActionsTableCard"
+          @setItemsPerPage="setItemsPerPage"
+          @setPage="setPage"
+          @setSearch="setSearch"
+          @setDate="setDate"
+          @setDeleteItem="setDeleteItem"
+          @setDetailItem="setDownloadItem"
+        />
+      </div>
     </NuxtLayout>
   </div>
 </template>
 <script>
+import html2pdf from "html2pdf.js";
 export default {
   data: () => ({
     aHeader: [
       {
-        sText: "Nº Trámite",
-        title: "Nº Trámite",
-        sValue: "iNum",
-        key: "iNum",
-        sortable: true,
-        sClass: "global-header-table ",
-        sCellClass: "global-body-table w-s-nowrap",
+        sText: "ID de transferencia",
+        title: "ID de transferencia",
+        sValue: "sId",
+        key: "sId",
+        sortable: false,
+        align: "start",
+        sClass: "global-header-table min-w-150px text-start",
+        sCellClass: "global-body-table text-start",
       },
       {
         sText: "Fecha y hora",
@@ -28,34 +75,54 @@ export default {
         key: "sDateTime",
         sortable: false,
         align: "center",
-        sClass: "global-header-table min-w-150px text-center",
-        sCellClass: "global-body-table text-center",
+        sClass: "global-header-table text-center w-s-nowrap",
+        sCellClass: "global-body-table w-s-nowrap text-center",
       },
       {
-        title: "Nombre del restaurante",
-        sText: "Nombre del restaurante",
-        sValue: "sRestaurantName",
-        key: "sRestaurantName",
-        sortable: true,
+        title: "Establecimiento",
+        sText: "Establecimiento",
+        sValue: "sEstablishmentName",
+        key: "sEstablishmentName",
+        sortable: false,
         align: "center",
         sClass: "global-header-table text-center",
         sCellClass: "global-body-table w-s-nowrap text-center",
       },
       {
-        sText: "Estado",
-        title: "Estado",
-        sValue: "sStatus",
-        key: "sStatus",
-        sortable: true,
+        sText: "Concepto",
+        title: "Concepto",
+        sValue: "sConcept",
+        key: "sConcept",
+        sortable: false,
         align: "center",
         sClass: "global-header-table text-center",
         sCellClass: "global-body-table text-center",
       },
       {
-        sText: "Responsable",
-        title: "Responsable",
-        sValue: "sManager",
-        key: "sManager",
+        sText: "Método de pago",
+        title: "Método de pago",
+        sValue: "sPaymentMethod",
+        key: "sPaymentMethod",
+        sortable: false,
+        align: "center",
+        sClass: "global-header-table text-center",
+        sCellClass: "global-body-table text-center",
+      },
+      {
+        sText: "Estado",
+        title: "Estado",
+        sValue: "eStatus",
+        key: "eStatus",
+        sortable: false,
+        align: "center",
+        sClass: "global-header-table text-center",
+        sCellClass: "global-body-table text-center",
+      },
+      {
+        sText: "Monto",
+        title: "Monto",
+        sValue: "dAmount",
+        key: "dAmount",
         sortable: false,
         align: "center",
         sClass: "global-header-table text-center",
@@ -76,8 +143,7 @@ export default {
     ],
     aItemsCurrent: [],
     aItems: [],
-    sAdmissionId: null,
-    sComponent: null,
+    sUserId: null,
     aActionsTableCard: [
       {
         sIcon: `<i class="mdi mdi-open-in-new"></i>`,
@@ -98,6 +164,7 @@ export default {
       sPlaceholder: "Folio, nombre ó correo electrónico",
     },
     sSearch: "",
+    sDate: null,
     bDialogConfirmOrigin: false,
     oItemConfirmOrigin: {},
     bDialog: false,
@@ -181,26 +248,29 @@ export default {
             sSearch: this.sSearch ? this.sSearch : "",
             iPageNumber: this.iPage,
             iItemsPerPage: this.iItemsPerPage,
+            iMonth: this.sDate ? this.sDate.month + 1 : null,
+            iYear: this.sDate ? this.sDate.year : null,
           },
         };
-        this.bLoadingItems = false;
-        return;
-        const oResult = await this.$api.get(`admissions`, payload);
-        this.aItems = oResult.data.admissionRequests.map((e, i) => {
+
+        const oResult = await this.$api.get(`payments`, payload);
+        this.aItems = oResult.data.payments.map((e, i) => {
           return {
             idx: i,
-            sId: e.sAdmissionRequestId,
-            sFolio: e.iFolio,
-            iNum: e.iFolio,
+            ...e,
+            sId: e.sStripePaymentId,
             sDateTime: this.getFormatDDMMYYYY(new Date(e.tCreatedAt), true),
-            sRestaurantName: e.Establishment.sName,
-            eStatus: e.eStatus,
-            // sStatus: this.getAdmissionStatusName(e.eStatus),
-            sNameStatus: this.getAdmissionStatusName(e.eStatus),
-            sColorStatus: this.getAdmissionStatusColors(e.eStatus),
-            sManager: e?.ManagedBy?.sName
-              ? `${e?.ManagedBy?.sName} ${e?.ManagedBy?.sLastName}`
+            sEstablishmentName: e.sName,
+            sConcept: "Suscripción regular",
+            sPaymentMethod: e.PaymentMethod?.oCard
+              ? `${this.getTitleCaseGlobal(e.PaymentMethod?.oCard?.sBrand)} *${
+                  e.PaymentMethod?.oCard?.sLast4 ?? ""
+                }`
               : null,
+            eStatus: this.getPaymentStatusName(e.eStatus),
+            sColorStatus: this.getStatusColorPayment(e.eStatus),
+            dAmount: `$ ${this.getFormatMoneyGlobal(e.dAmount)} MXN`,
+            bDownloadPDF: e.sStripePaymentMethodId ? true : false,
           };
         });
         this.iNumPage =
@@ -218,8 +288,86 @@ export default {
         });
       }
     },
+    async getDetailPayment(sId) {
+      try {
+        const payload = {
+          headers: {
+            Authorization: "Bearer " + this.$store.user.sToken,
+          },
+          params: {},
+        };
+        const oResult = await this.$api.get(`payments/${sId}`, payload);
+        let oPayment = oResult.data.payment;
+        oPayment["eStatus"] = this.getPaymentStatusName(oPayment.eStatus);
+        oPayment["sDateIssue"] = this.getFormatDDMMYYYY(
+          new Date(oPayment.tCreatedAt),
+          true
+        );
+        oPayment["sBrand"] = this.getTitleCaseGlobal(
+          oPayment.Invoice.PaymentMethod.sBrand
+        );
+        oPayment["sLast4"] = oPayment.Invoice.PaymentMethod.sLast4;
+        oPayment["sConcept"] = "Suscripción regular";
+        oPayment["dQuantity"] = 1;
+        oPayment["sPrice"] = this.getFormatMoneyGlobal(oPayment.dAmount);
+        oPayment["sTotalPrice"] = this.getFormatMoneyGlobal(
+          1 * oPayment.dAmount
+        );
+        return this.setFillData(oPayment);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getDetailEstablishment(sId) {
+      try {
+        const payload = {
+          headers: {
+            Authorization: "Bearer " + this.$store.user.sToken,
+          },
+          params: {},
+        };
+        const oResult = await this.$api.get(`establishments/${sId}`, payload);
+        let oEstablishment = oResult.data.establishment;
+        oEstablishment["sBillingFullAddress"] = `${
+          oEstablishment.sBillingAddress
+        } ${oEstablishment.sBillingAddressCity} ${
+          oEstablishment.sBillingAddressZIPCode
+        } ${oEstablishment.State?.sCode ?? ""} ${
+          oEstablishment.State?.Country?.sName ?? ""
+        }`;
+
+        oEstablishment["sBillingEmail"] = oEstablishment.sBillingEmail
+          ? oEstablishment.sBillingEmail
+          : "Sin correo electrónico";
+
+        oEstablishment["sPhoneNumber"] = oEstablishment.sPhoneNumber
+          ? this.getFormatPhoneGlobal(
+              oEstablishment?.CountryCallingCode?.sCallingCode,
+              oEstablishment.sPhoneNumber,
+              oEstablishment.sPhoneExtension
+            )
+          : "Sin teléfono";
+
+        return oEstablishment;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async setFillData(oItem) {
+      const oEstablishment = await this.getDetailEstablishment(
+        oItem.sEstablishmentId
+      );
+      return {
+        oPayment: oItem,
+        oEstablishment: oEstablishment,
+      };
+    },
     setSearch(sSearch) {
       this.sSearch = sSearch;
+      this.getItems();
+    },
+    setDate(sDate) {
+      this.sDate = sDate;
       this.getItems();
     },
     setDeleteItem(oItem) {
@@ -245,12 +393,55 @@ export default {
       this.sTypeDialog = "add";
       this.bDialog = !this.bDialog;
     },
-    setDetailItem(oItem) {
-      if (oItem) {
-      }
-      this.bDialog = !this.bDialog;
-    },
+    async setDownloadItem(oItem) {
+      try {
+        this.$store.catalog.setOverlay(true);
+        let oBill = {
+          contentHtml: await this.getDetailPayment(oItem.sPaymentId),
+          // Otros objetos y arrays que necesites
+        };
 
+        // return;
+        const response = await fetch("/pdf/bill.html");
+        let html = await response.text();
+
+        // Función recursiva para reemplazar las variables en el HTML
+        const replaceVariables = (html, obj, parentKey = "") => {
+          for (const key in obj) {
+            const fullKey = parentKey ? `${parentKey}.${key}` : key;
+            const regex = new RegExp(`{{\\s*${fullKey}\\s*}}`, "g");
+            if (typeof obj[key] === "object" && obj[key] !== null) {
+              html = replaceVariables(html, obj[key], fullKey);
+            } else {
+              html = html.replace(regex, obj[key]);
+            }
+          }
+          return html;
+        };
+
+        html = replaceVariables(html, oBill);
+
+        // Crea un elemento temporal para insertar el HTML
+        const tempElement = document.createElement("div");
+        tempElement.innerHTML = html;
+
+        // Configuración de html2pdf
+        const opt = {
+          margin: 0,
+          filename: `Factura-${oBill.contentHtml.oPayment.sStripePaymentId}.pdf`,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        };
+
+        // Convertir el HTML a PDF
+        html2pdf().from(tempElement).set(opt).save();
+        this.$store.catalog.setOverlay(false);
+      } catch (error) {
+        this.$store.catalog.setOverlay(false);
+        console.error("Error al cargar el archivo HTML:", error);
+      }
+    },
     setItemsPerPage(iItemsPerPage) {
       this.iItemsPerPage = iItemsPerPage;
       this.iPage = 1;
