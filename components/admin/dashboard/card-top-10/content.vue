@@ -9,7 +9,27 @@
     </div>
     <div v-else class="content-items-all">
       <div v-if="aItems.length === 0" class="content-empty-items">
-        <table-card-empty-items />
+        <div class="content-item-card">
+          <div class="content-number"># 1</div>
+          <div class="content-txt">
+            <div class="txt-card">Sin información</div>
+            <div class="content-rating">
+              <Icon icon="ic:round-star" />
+              0
+            </div>
+          </div>
+        </div>
+        <div
+          v-for="(oItem, i) in 9"
+          :key="i + '-empty'"
+          class="content-item-card-normal"
+        >
+          <div class="txt-number-normal">
+            {{ i + 2 }}
+          </div>
+          <div class="txt-card-normal">Sin información</div>
+          <div class="txt-rating">0</div>
+        </div>
       </div>
       <div v-if="aItems.length > 0" class="content-item-card">
         <div class="content-number"># 1</div>

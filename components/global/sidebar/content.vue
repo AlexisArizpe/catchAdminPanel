@@ -64,7 +64,6 @@ export default {
     mini: false,
   }),
   computed: {
-
     aMenuGlobal() {
       return this.$store.user.bSuperAdmin
         ? this.$store.menu.aMenuGlobal
@@ -165,6 +164,25 @@ export default {
 };
 </script>
 <style>
+.v-navigation-drawer__content::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+}
+
+.v-navigation-drawer__content::-webkit-scrollbar-track {
+  box-shadow: transparent;
+  border-radius: 10px;
+}
+
+.v-navigation-drawer__content::-webkit-scrollbar-thumb {
+  background: var(--global-color-scroll) !important;
+  border-radius: 10px;
+}
+
+.v-navigation-drawer__content::-webkit-scrollbar-thumb:hover {
+  background: var(--global-color-scroll) !important;
+}
+
 .v-navigation-drawer {
   border-top-right-radius: 30px !important;
   border-bottom-right-radius: 30px !important;
@@ -195,7 +213,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding-bottom: 50px;
+  padding-bottom: 30px;
 }
 .item-sidebar-all {
   display: flex;

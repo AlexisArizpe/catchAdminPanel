@@ -26,7 +26,7 @@
             :bLoadingItems="bLoadingItems"
           />
         </div>
-        <div class="content-bottom-all pb-3">
+        <div class="content-bottom-all pb-6">
           <admin-dashboard-card-top-10-content
             sTitle="más canjeados"
             :aItems="aItemsMoreRedeem"
@@ -87,7 +87,7 @@ export default {
 
         const oResult = await this.$api.get(`dashboard`, payload);
         let oDashboard = oResult.data.dashboard;
-       
+
         // #region Cards Benefits
         this.aItemsDash = [
           {
@@ -191,8 +191,12 @@ export default {
         for (const [key, value] of Object.entries(
           oDashboard.benefitsActivationDailyActivity
         )) {
-          aBenefitsActivationDailyActivityData.push(value);
-          aBenefitsActivationDailyActivityLabel.push(this.getNameDaysGlobal(key));
+          if (value > 0) {
+            aBenefitsActivationDailyActivityData.push(value);
+            aBenefitsActivationDailyActivityLabel.push(
+              this.getNameDaysGlobal(key)
+            );
+          }
         }
 
         this.oDataBarChartDays.label = aBenefitsActivationDailyActivityLabel;
@@ -209,9 +213,10 @@ export default {
         for (const [key, value] of Object.entries(
           oDashboard.benefitsActivationActivity
         )) {
-
-          aBenefitsActivationActivityData.push(value);
-          aBenefitsActivationActivityLabel.push(key.replace('_',' a '));
+          if (value > 0) {
+            aBenefitsActivationActivityData.push(value);
+            aBenefitsActivationActivityLabel.push(key.replace("_", " a "));
+          }
         }
 
         this.oDataBarChartHours.label = aBenefitsActivationActivityLabel;
@@ -250,6 +255,7 @@ export default {
 <style scoped>
 .content-top-all {
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
   width: 100%;
 }

@@ -166,7 +166,6 @@ export default {
         this.sDateRangeFormat = null;
         this.aDateRange = null;
       }
-      console.log(this.aDateRange,"aDateRange")
       this.$emit("setDateRange", this.aDateRange);
     },
     sDateRangeFormat() {

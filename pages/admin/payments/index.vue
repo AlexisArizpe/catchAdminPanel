@@ -262,9 +262,9 @@ export default {
             sDateTime: this.getFormatDDMMYYYY(new Date(e.tCreatedAt), true),
             sEstablishmentName: e.sName,
             sConcept: "Suscripción regular",
-            sPaymentMethod: e.sStripePaymentMethodId
-              ? `${this.getTitleCaseGlobal(e.PaymentMethod.oCard.sBrand)} *${
-                  e.PaymentMethod.oCard.sLast4
+            sPaymentMethod: e.PaymentMethod?.oCard
+              ? `${this.getTitleCaseGlobal(e.PaymentMethod?.oCard?.sBrand)} *${
+                  e.PaymentMethod?.oCard?.sLast4 ?? ""
                 }`
               : null,
             eStatus: this.getPaymentStatusName(e.eStatus),
@@ -328,19 +328,25 @@ export default {
         };
         const oResult = await this.$api.get(`establishments/${sId}`, payload);
         let oEstablishment = oResult.data.establishment;
-        oEstablishment[
-          "sBillingFullAddress"
-        ] = `${oEstablishment.sBillingAddress} ${oEstablishment.sLocationAddressCity} ${oEstablishment.sLocationAddressZIPCode} ${oEstablishment.State.sCode} ${oEstablishment.State.Country.sName}`;
+        oEstablishment["sBillingFullAddress"] = `${
+          oEstablishment.sBillingAddress
+        } ${oEstablishment.sBillingAddressCity} ${
+          oEstablishment.sBillingAddressZIPCode
+        } ${oEstablishment.State?.sCode ?? ""} ${
+          oEstablishment.State?.Country?.sName ?? ""
+        }`;
 
         oEstablishment["sBillingEmail"] = oEstablishment.sBillingEmail
           ? oEstablishment.sBillingEmail
           : "Sin correo electrónico";
 
-        oEstablishment["sPhoneNumber"] = this.getFormatPhoneGlobal(
-          oEstablishment.CountryCallingCode.sCallingCode,
-          oEstablishment.sPhoneNumber,
-          oEstablishment.sPhoneExtension
-        );
+        oEstablishment["sPhoneNumber"] = oEstablishment.sPhoneNumber
+          ? this.getFormatPhoneGlobal(
+              oEstablishment?.CountryCallingCode?.sCallingCode,
+              oEstablishment.sPhoneNumber,
+              oEstablishment.sPhoneExtension
+            )
+          : "Sin teléfono";
 
         return oEstablishment;
       } catch (error) {
