@@ -268,7 +268,7 @@ export default {
   },
   computed: {
     sToken() {
-      return this.$route.params?.token ?? this.$store.user.sToken;
+      return this.$route.params?.token ?? null;
     },
     sId() {
       return this.$route.params?.id ?? null;
@@ -335,14 +335,27 @@ export default {
     },
     async getItem() {
       try {
-        const payload = {
-          headers: {
-            Authorization: "Bearer " + this.sToken,
-          },
-          params: {},
-        };
-        const oResult = await this.$api.get(`admissions/${this.sId}`, payload);
-        this.setFillData(oResult.data.admissionRequest);
+        if (this.sToken) {
+          const payload = {
+            headers: {
+              Authorization: "Bearer " + this.sToken,
+            },
+            params: {},
+          };
+          const oResult = await this.$api.get(
+            `admissions/${this.sId}`,
+            payload
+          );
+          console.log(oResult)
+          this.setFillData(oResult.data.admissionRequest);
+        } else {
+          this.$swal.fire({
+            title: "¡Error!",
+            text: "Token invalido",
+            icon: "error",
+            confirmButtonText: "Cerrar",
+          });
+        }
       } catch (error) {
         console.log(error);
         console.log(error.response.data.message);
