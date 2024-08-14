@@ -1,6 +1,5 @@
 <template>
   <div class="content-doughnut-chart-all">
-    <!-- <p class="txt-title">{{ sTitle }}</p> -->
     <p class="txt-title">
       Promedio de beneficios <span class="font-weight-bold">{{ sTitle }}</span>
     </p>
@@ -15,7 +14,10 @@
     </div>
   </div>
 </template>
+
 <script>
+import { nextTick } from "vue";
+
 export default {
   props: {
     sTitle: {
@@ -45,6 +47,25 @@ export default {
         type: "doughnut",
         data: this.oData,
         options: {
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function (tooltipItem) {
+                  const value = tooltipItem.raw;
+                  // Para porcentaje
+                  const total = tooltipItem.dataset.data.reduce(
+                    (acc, val) => acc + val,
+                    0
+                  );
+                  const percentage = ((value / total) * 100).toFixed(2);
+                  // return `${tooltipItem.label}: ${value} (${percentage}%)`;
+                  return `${value}%`;
+                  // Para moneda
+                  // return `${tooltipItem.label}: $${value}`;
+                },
+              },
+            },
+          },
           scales: {
             y: {
               beginAtZero: true,
@@ -66,6 +87,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 .content-doughnut-chart-all {
   min-width: 345px;
@@ -85,7 +107,6 @@ export default {
 }
 canvas {
   width: 100% !important;
-  /* height: auto !important; */
   max-height: 180px;
 }
 .content-empty-items {

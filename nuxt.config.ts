@@ -7,6 +7,12 @@ export default defineNuxtConfig({
       title: "Catch | Panel Admin",
     }
   },
+  runtimeConfig: {
+    public: {
+      apiURL: process.env.BASE_URL
+    },
+  },
+  plugins: ['~/plugins/api.ts'],
   devtools: { enabled: false },
   css: [
     "~/assets/css/root.css",

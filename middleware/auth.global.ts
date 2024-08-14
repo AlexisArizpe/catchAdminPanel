@@ -6,12 +6,13 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   var sRouteName = to.name;
   console.log(sRouteName)
   const bAuth = useUserStore().bAuth;
+  const sToken = useUserStore().sToken;
   const bSuperAdmin = useUserStore().bSuperAdmin;
   //Verifica si esta auhtorizado para entrar al panel
   if (bAuth) {
     // Si es super admin, puede entrar a los modulos que sea, menos al login y recovery-pass ya que se encuentra con session activa
-    let oResult = await usePermissionsStore().getPermissionsGlobal();
-    let sCreatedBy = oResult.data.user.Administrator.CreatedBy;
+    let oResult = await usePermissionsStore().getPermissionsGlobal(sToken);
+    let sCreatedBy = oResult.user.Administrator.CreatedBy;
     useUserStore().setSuperAdmin(sCreatedBy === null ? true : false);
     if (bSuperAdmin) {
       usePermissionsStore().setActionPermission(undefined);
@@ -20,7 +21,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       }
     } else {
       //Si no es super admin, verifica los modulos que puede navegar e igual no podra navegar en login ni recovery pass
-      const aMenuFilter = await useMenuStore().getMenuFilterGlobal();
+      const aMenuFilter = await useMenuStore().getMenuFilterGlobal(sToken);
       const aMenuGlobal = useMenuStore().aMenuGlobal;
       for (const oItem of aMenuGlobal) {
         for (const oItemRoute of oItem.aRouters) {

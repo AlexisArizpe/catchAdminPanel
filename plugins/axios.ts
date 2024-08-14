@@ -2,11 +2,13 @@ import axios from "axios";
 
 
 export default defineNuxtPlugin((nuxtApp) => {
-  
-  
+
+
   // create axios instance as api
+  const config = useRuntimeConfig();
+  const apiURL = config.public.apiURL;
   let api = axios.create({
-    baseURL: "https://api.catchapp.mx/dev/api/v1/sp/",
+    baseURL: apiURL,
     headers: {
       common: {},
     },
