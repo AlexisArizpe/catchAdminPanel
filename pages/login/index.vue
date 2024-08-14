@@ -127,15 +127,15 @@ export default {
           this.$store.user.setAuth(true);
           // consulta los permisos del cliente, tanto si es super admin y los modulos disponibles.
           let aPermissions =
-            await this.$store.permissions.getPermissionsGlobal();
+            await this.$store.permissions.getPermissionsGlobal(oResult.data.session.sToken);
 
           let sFirstModuleId =
-            aPermissions.data.user.Administrator.Permissions[0].sModuleId;
+            aPermissions.user.Administrator.Permissions[0].sModuleId;
           let sToRoute = this.$store.menu.aMenuGlobal.find(
             (e) => e.sId === sFirstModuleId
           ).sRoute;
 
-          let sCreatedBy = aPermissions.data.user.Administrator.CreatedBy;
+          let sCreatedBy = aPermissions.user.Administrator.CreatedBy;
           this.$store.user.setSuperAdmin(sCreatedBy === null ? true : false);
 
           // this.$store.alert.success(oResult.data.message);

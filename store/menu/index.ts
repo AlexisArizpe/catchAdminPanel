@@ -80,7 +80,7 @@ export const useMenuStore = defineStore('menu', {
                 sActions: null,
                 sRoute: "admin-customers",
                 sRouteName: "customers",
-                aRouters: ["admin-customers","admin-customers-id"],
+                aRouters: ["admin-customers", "admin-customers-id"],
                 bGroup: false,
             },
             // #endregion Consumidores
@@ -89,10 +89,10 @@ export const useMenuStore = defineStore('menu', {
         aMenuFilterGlobal: useLocalStorage<Array<any>>('aMenuFilterGlobal', []),
     }),
     actions: {
-        async getMenuFilterGlobal() {
+        async getMenuFilterGlobal(sToken: string = '') {
             // this.aMenuFilterGlobal = []
-            const oResponse = await usePermissionsStore().getPermissionsGlobal();
-            const aPermissions = JSON.parse(JSON.stringify(oResponse.data.user.Administrator.Permissions));
+            const oResponse = await usePermissionsStore().getPermissionsGlobal(sToken);
+            const aPermissions = JSON.parse(JSON.stringify(oResponse.user.Administrator.Permissions));
             const aPermissionsFilter = JSON.parse(JSON.stringify(aPermissions)).filter((e: any) => e.eAction !== "FORBIDDEN")
             const aMenuFilter = [];
             for (const oItemMenu of this.aMenuGlobal) {

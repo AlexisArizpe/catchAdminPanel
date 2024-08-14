@@ -75,18 +75,13 @@ export default {
     async getItem() {
       try {
         this.bLoadingItems = true;
-        const payload = {
-          headers: {
-            Authorization: "Bearer " + this.$store.user.sToken,
-          },
-          params: {
-            tStart: this.tStart,
-            tEnd: this.tEnd,
-          },
+        const params = {
+          tStart: this.tStart,
+          tEnd: this.tEnd,
         };
 
-        const oResult = await this.$api.get(`dashboard`, payload);
-        let oDashboard = oResult.data.dashboard;
+        const oResult = await this.$apiFetch("dashboard", "GET", params);
+        let oDashboard = oResult.dashboard;
 
         // #region Cards Benefits
         this.aItemsDash = [

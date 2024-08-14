@@ -312,7 +312,9 @@ export default {
           {
             eStatus: null,
             sName: "Ticket promedio",
-            sPorcent: this.oItemEstablishment.dAverageTicket ?? 0,
+            sPorcent: `$ ${this.getFormatMoneyGlobal(
+              this.oItemEstablishment.dAverageTicket ?? 0
+            )}`,
             sTotal: "",
           },
         ];
@@ -343,7 +345,7 @@ export default {
             ...e,
             sId: e.sBenefitId,
             sFolio: e.sFolio,
-            sDate:this.getFormatDDMMYYYY(new Date(e.tCreatedAt)),
+            sDate: this.getFormatDDMMYYYY(new Date(e.tCreatedAt)),
             sBenefitsType: this.getBenefitTypeName(e.eBenefitType),
             sName: e.sName,
             sDescription: e.sDescription,
