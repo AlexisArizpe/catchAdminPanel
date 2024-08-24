@@ -1,71 +1,72 @@
 <template>
-    <v-text-field
-      v-model="sPhone"
-      :disabled="disabled"
-      :readonly="readonly"
-      :hide-details="hideDetails"
-      variant="solo"
-      flat
-      density="comfortable"
-      color="primary"
-      :bg-color="BgColor"
-      class="input-global"
-      required
-      :rules="phoneRulesGlobal"
-      placeholder="Teléfono"
-      maxlength="12"
-      rounded="lg"
-    >
-      <!-- @input="getFormatNumber('sPhone')" -->
-      <template #label>
-        Teléfono <span class="color-red-global">*</span>
-      </template>
-      <template #prepend-inner>
-        <div class="menu-country-phone-global">
-          <v-menu>
-            <template v-slot:activator="{ props }">
-              <v-btn class="btn-list-country-phone-global" v-bind="props">
-                <div class="content-btn-country-phone-global">
-                  <img
-                    class="img-flag-country-global"
-                    :src="getFlagCountryGlobal(sCountryCallingCodeSelected)"
-                  />
-                  <span class="mdi mdi-menu-down"></span>
-                </div>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item
-                v-for="(item, index) in aCountrys"
-                :key="index"
-                link
-                @click="setCountryPhone(item.sValue)"
-                class="d-flex"
-              >
-                <template v-slot:prepend>
-                  <img
-                    class="img-flag-country-global mr-3"
-                    :src="getFlagCountryGlobal(item.sValue)"
-                  />
-                </template>
+  <v-text-field
+    v-model="sPhone"
+    :disabled="disabled"
+    :readonly="readonly"
+    :hide-details="hideDetails"
+    :variant="variant"
+    flat
+    density="comfortable"
+    color="primary"
+    :bg-color="BgColor"
+    class="input-global"
+    required
+    :rules="phoneRulesGlobal"
+    placeholder="Teléfono"
+    maxlength="12"
+    rounded="lg"
+  >
+    <!-- @input="getFormatNumber('sPhone')" -->
+    <template #label>
+      Teléfono <span class="color-red-global">*</span>
+    </template>
+    <template #prepend-inner>
+      <div v-if="bCountryCallingCode" class="menu-country-phone-global">
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn class="btn-list-country-phone-global" v-bind="props">
+              <div class="content-btn-country-phone-global">
+                <img
+                  class="img-flag-country-global"
+                  :src="getFlagCountryGlobal(sCountryCallingCodeSelected)"
+                />
+                <span class="mdi mdi-menu-down"></span>
+              </div>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(item, index) in aCountrys"
+              :key="index"
+              link
+              @click="setCountryPhone(item.sValue)"
+              class="d-flex"
+            >
+              <template v-slot:prepend>
+                <img
+                  class="img-flag-country-global mr-3"
+                  :src="getFlagCountryGlobal(item.sValue)"
+                />
+              </template>
 
-                <v-list-item-title v-text="item.sCode"></v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </div>
-      </template>
-      <template #append>
-        <input-quantity
-          v-model="sExt"
-          :bg-color="BgColor"
-          :readonly="readonly"
-          class="input-ext-global"
-          placeholder="Ext."
-          label="Ext."
-        ></input-quantity>
-      </template>
-    </v-text-field>
+              <v-list-item-title v-text="item.sCode"></v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
+    </template>
+    <template #append>
+      <input-quantity
+        v-model="sExt"
+        :bg-color="BgColor"
+        :readonly="readonly"
+        :variant="variant"
+        class="input-ext-global"
+        placeholder="Ext."
+        label="Ext."
+      ></input-quantity>
+    </template>
+  </v-text-field>
 </template>
 <script>
 export default {
@@ -73,6 +74,10 @@ export default {
     modelValue: {
       type: String,
       required: true,
+    },
+    bCountryCallingCode: {
+      type: Boolean,
+      default: true,
     },
     sCountryCallingCode: {
       // type: String,
@@ -87,6 +92,10 @@ export default {
     BgColor: {
       type: String,
       default: "grey",
+    },
+    variant: {
+      type: String,
+      default: "solo",
     },
     disabled: Boolean,
     readonly: Boolean,
