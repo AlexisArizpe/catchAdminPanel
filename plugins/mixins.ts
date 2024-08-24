@@ -11,7 +11,7 @@ const myMixin = {
         sLoadingTxtGlobal: "Cargando Información...",
         sEmptyTxtGlobal: "No hay información disponible para mostrar.",
         sEmptyRowGlobal: "No hay información.",
-        sAPIGlobal: "https://api.catchapp.mx/dev/api/v1/sp",
+        sAPIGlobal: "https://api.catchapp.mx/alfa/api/v1/sp",
         aMonths: [
             'Enero',
             'Febrero',

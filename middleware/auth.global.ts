@@ -12,7 +12,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   if (bAuth) {
     // Si es super admin, puede entrar a los modulos que sea, menos al login y recovery-pass ya que se encuentra con session activa
     let oResult = await usePermissionsStore().getPermissionsGlobal(sToken);
-    let sCreatedBy = oResult.user.Administrator.CreatedBy;
+    let sCreatedBy = oResult.user?.Administrator?.CreatedBy;
     useUserStore().setSuperAdmin(sCreatedBy === null ? true : false);
     if (bSuperAdmin) {
       usePermissionsStore().setActionPermission(undefined);
