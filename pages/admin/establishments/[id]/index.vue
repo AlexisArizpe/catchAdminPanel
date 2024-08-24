@@ -3,7 +3,7 @@
     <NuxtLayout name="panel">
       <headers-header :sNameHeader="sNameHeader" sTopText="Restaurantes" />
       <admin-establishments-detail-general-search-content
-        @setDetailItem="setDetailItemCustomer"
+        @setDetailItem="setDetailItemEstablishment"
         sTypeToAdd="dialog"
         sIconBtnAdd="mdi mdi-plus"
       />
@@ -47,7 +47,7 @@
       <v-dialog v-model="bDialog" width="630px" height="900px" persistent>
         <admin-establishments-detail-content-dialog
           :sEstablishmentId="sEstablishmentId"
-          @setCloseDialog="setDetailItemCustomer"
+          @setCloseDialog="setDetailItemEstablishment"
         />
       </v-dialog>
       <!-- #endregion dialog customer -->
@@ -418,8 +418,8 @@ export default {
       }
       this.bDialogBenefitDetail = !this.bDialogBenefitDetail;
     },
-    setDetailItemCustomer() {
-      this.bDialog = !this.bDialog;
+    setDetailItemEstablishment() {
+      this.$router.push({ name: "admin-establishments-id-detail" });
     },
     setItemsPerPage(iItemsPerPage) {
       this.iItemsPerPage = iItemsPerPage;

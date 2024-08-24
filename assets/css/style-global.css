@@ -85,6 +85,10 @@ body {
   -webkit-line-clamp: 1; /* Número de líneas a mostrar */
   -webkit-box-orient: vertical;
 }
+.txt-subtitle-form-global {
+  font-size: 0.8em;
+  font-weight: 500;
+}
 /* #endregion txts globals */
 
 /* #region font txt */
