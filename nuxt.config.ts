@@ -7,13 +7,16 @@ export default defineNuxtConfig({
       title: "Catch | Panel Admin",
     }
   },
+
   runtimeConfig: {
     public: {
       apiURL: process.env.BASE_URL
     },
   },
+
   plugins: ['~/plugins/api.ts'],
   devtools: { enabled: false },
+
   css: [
     "~/assets/css/root.css",
     "~/assets/css/fonts.css",
@@ -21,9 +24,11 @@ export default defineNuxtConfig({
     "vuetify/lib/styles/main.sass",
     "@mdi/font/css/materialdesignicons.min.css"
   ],
+
   build: {
     transpile: ["vuetify", "vue-toastification", '@vuepic/vue-datepicker'],
   },
+
   modules: [
     '@pinia/nuxt',
     ['@nuxtjs/google-fonts', {
@@ -50,5 +55,7 @@ export default defineNuxtConfig({
       ],
     }]
   ],
+
   ssr: false,
+  compatibilityDate: "2024-09-02",
 })
