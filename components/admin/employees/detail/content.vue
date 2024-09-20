@@ -340,7 +340,9 @@ export default {
             sName: this.sName,
             sLastName: this.sLastName,
             sEmail: this.sEmail,
-            sPhoneNumber: this.sPhoneNumber.replaceAll("-", ""),
+            sPhoneNumber: this.sPhoneNumber
+              ? this.sPhoneNumber.replaceAll("-", "")
+              : null,
             sPhoneExtension: this.sPhoneExtension,
             sRole: this.sRole,
           };
