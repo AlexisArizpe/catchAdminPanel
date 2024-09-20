@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-const stripe = new Stripe(useRuntimeConfig().stripeSecretKey, {
+const stripe = new Stripe(useRuntimeConfig().public.stripeSecretKey, {
     // Asegúrate de que la versión de la API de Stripe sea la correcta
     // apiVersion: '2022-11-15',
 });

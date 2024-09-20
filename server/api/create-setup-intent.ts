@@ -3,7 +3,7 @@ import { defineEventHandler, getQuery } from 'h3';
 
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig();
-    const stripe = new Stripe(config.stripeSecretKey, {
+    const stripe = new Stripe(config.public.stripeSecretKey, {
     });
 
     const query = getQuery(event);
