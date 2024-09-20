@@ -136,7 +136,6 @@
                     bg-color="white"
                     placeholder="Especificaciones"
                     rounded="lg"
-                    :rules="specificationsRulesGlobal"
                   >
                     <template #label>
                       <span class="txt-labels-form-initial-global"
@@ -346,7 +345,7 @@ export default {
             `admissions/${this.sId}`,
             payload
           );
-          console.log(oResult)
+          console.log(oResult);
           this.setFillData(oResult.data.admissionRequest);
         } else {
           this.$swal.fire({
