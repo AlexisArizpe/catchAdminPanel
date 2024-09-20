@@ -88,8 +88,6 @@ export default {
       bCardType: false,
       cardType: null,
       cardTypeIcon: null,
-      stripeSecretKey:
-        "sk_test_51PJzbDBvJTbcJIdcaqOicLH3eBNTLmLs9wyxqa2hQH3GwsjUCxz8jWubdKhBukRymMlz1nK3DqilwYEKfsyjN3DB003eumbwKv",
     };
   },
   computed: {
@@ -101,6 +99,9 @@ export default {
     },
     bShowLogout() {
       return this.$route.name === "payment-method-required";
+    },
+    stripeSecretKey() {
+      return useRuntimeConfig().public.stripeSecretKey;
     },
   },
   async mounted() {

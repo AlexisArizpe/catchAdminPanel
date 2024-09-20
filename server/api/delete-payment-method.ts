@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-const stripe = new Stripe(useRuntimeConfig().stripeSecretKey, {});
+const stripe = new Stripe(useRuntimeConfig().public.stripeSecretKey, {});
 
 export default defineEventHandler(async (event) => {
     try {
