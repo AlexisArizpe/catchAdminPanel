@@ -50,6 +50,7 @@
                   v-model="sPhoneNumberRestaurant"
                   :sCountryCallingCode="iCountryCallingCodeRestaurant"
                   :sExtPhone="sPhoneExtensionRestaurant"
+                  :required="false"
                   @setCountryPhone="
                     setCountryPhone($event, 'iCountryCallingCodeRestaurant')
                   "
@@ -769,7 +770,9 @@ export default {
           payload = {
             Establishment: {
               sName: this.sNameRestaurant,
-              sPhoneNumber: this.sPhoneNumberRestaurant.replaceAll("-", ""),
+              sPhoneNumber: this.sPhoneNumberRestaurant
+                ? this.sPhoneNumberRestaurant.replaceAll("-", "")
+                : null,
               sPhoneExtension: this.sPhoneExtensionRestaurant,
               // México
               iCountryCallingCode: this.iCountryCallingCodeRestaurant,
@@ -803,6 +806,8 @@ export default {
         this.$store.table.setRefresh(true);
         this.bLoadingBtnChange = false;
       } catch (error) {
+        console.log(error);
+
         this.bLoadingBtnChange = false;
         this.$swal.fire({
           title: "¡Error!",

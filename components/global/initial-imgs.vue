@@ -2,7 +2,7 @@
   <div class="content-imgs-login-all">
     <div class="content-txt-img-all">
       <div class="content-txt-welcome-to">
-        <p class="txt-welcome-to">Bienvendio a</p>
+        <p class="txt-welcome-to">Bienvenido a</p>
       </div>
       <div class="content-img-catch-yellow">
         <img
