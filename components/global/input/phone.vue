@@ -11,7 +11,7 @@
     :bg-color="BgColor"
     class="input-global"
     required
-    :rules="phoneRulesGlobal"
+    :rules="required ? phoneRulesGlobal : []"
     placeholder="Teléfono"
     maxlength="12"
     rounded="lg"
