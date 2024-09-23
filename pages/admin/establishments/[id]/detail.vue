@@ -55,8 +55,10 @@
                     density="comfortable"
                     color="primary"
                     bg-color="white"
-                    placeholder="Descripcióndel restaurante"
+                    placeholder="Descripción del restaurante"
                     rounded="lg"
+                    counter="255"
+                    :maxlength="255"
                   >
                   </v-textarea>
                   <!-- #endregion descripción -->
