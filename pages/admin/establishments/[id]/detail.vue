@@ -55,8 +55,10 @@
                     density="comfortable"
                     color="primary"
                     bg-color="white"
-                    placeholder="Descripcióndel restaurante"
+                    placeholder="Descripción del restaurante"
                     rounded="lg"
+                    counter="255"
+                    :maxlength="255"
                   >
                   </v-textarea>
                   <!-- #endregion descripción -->
@@ -1054,8 +1056,9 @@ export default {
             payload = {
               sName: this.oItem.oRestaurant.sPublicNameRestaurant,
               ReservationData: {
-                sWhatsappNumber:
-                  this.oItem.oReservation.sWhatsappNumber.replaceAll("-", ""),
+                sWhatsappNumber: this.oItem.oReservation.sWhatsappNumber
+                  ? this.oItem.oReservation.sWhatsappNumber.replaceAll("-", "")
+                  : null,
                 sReservationUrl: this.oItem.oReservation.sReservationUrl,
                 sCallNumber: this.oItem.oReservation.sCallNumber.replaceAll(
                   "-",
@@ -1275,7 +1278,9 @@ export default {
       return {
         sName: this.oItem.sName,
         sDescription: this.oItem.sDescription,
-        sPhoneNumber: this.oItem.sPhoneNumber.replaceAll("-", ""),
+        sPhoneNumber: this.oItem.sPhoneNumber
+          ? this.oItem.sPhoneNumber.replaceAll("-", "")
+          : null,
         sPhoneExtension: this.oItem.sPhoneExtension,
         // México
         iCountryCallingCode: this.oItem.iCountryCallingCode,

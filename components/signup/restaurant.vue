@@ -108,7 +108,6 @@
       <v-col class="py-0" cols="12">
         <v-text-field
           v-model="oItemsField.sLocationAddressDetail"
-          :rules="addressRulesGlobal"
           variant="solo"
           flat
           density="comfortable"
@@ -266,7 +265,7 @@ export default {
       this.oItemsField.dLocationLongitude = oLocation.lng;
     },
     setLocationSpecific(oItem) {
-      const oState = this.aStates.find((e) => (e.sName === oItem.sState));
+      const oState = this.aStates.find((e) => e.sName === oItem.sState);
       this.oItemsField.sLocationAddress = `${oItem.sStreet} ${oItem.sNumber}`;
       this.oItemsField.sLocationAddressCity = oItem.sCity;
       this.oItemsField.sLocationAddressZIPCode = oItem.sPostalCode;

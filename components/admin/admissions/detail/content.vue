@@ -336,7 +336,9 @@ export default {
             sName: this.sName,
             sLastName: this.sLastName,
             sEmail: this.sEmail,
-            sPhoneNumber: this.sPhoneNumber.replaceAll("-", ""),
+            sPhoneNumber: this.sPhoneNumber
+              ? this.sPhoneNumber.replaceAll("-", "")
+              : null,
             sPhoneExtension: this.sPhoneExtension,
             sRole: this.sRole,
           };
@@ -356,6 +358,7 @@ export default {
             this.bLoadingBtnAdd = false;
           })
           .catch((error) => {
+            console.log(error);
             this.bLoadingBtnAdd = false;
             this.$swal.fire({
               title: "¡Error!",

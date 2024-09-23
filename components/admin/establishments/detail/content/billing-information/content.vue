@@ -55,7 +55,6 @@
       <p class="txt-subtitle-form-global mb-3">Especificaciones</p>
       <v-text-field
         v-model="oItem.BillingInformation.sAddressDetail"
-        :rules="addressRulesGlobal"
         variant="outlined"
         flat
         density="comfortable"

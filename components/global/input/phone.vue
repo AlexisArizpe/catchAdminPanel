@@ -11,14 +11,14 @@
     :bg-color="BgColor"
     class="input-global"
     required
-    :rules="phoneRulesGlobal"
+    :rules="required ? phoneRulesGlobal : []"
     placeholder="Teléfono"
     maxlength="12"
     rounded="lg"
   >
     <!-- @input="getFormatNumber('sPhone')" -->
     <template #label>
-      Teléfono <span class="color-red-global">*</span>
+      Teléfono <span class="color-red-global">{{ required ? "*" : "" }}</span>
     </template>
     <template #prepend-inner>
       <div v-if="bCountryCallingCode" class="menu-country-phone-global">
@@ -100,6 +100,10 @@ export default {
     disabled: Boolean,
     readonly: Boolean,
     hideDetails: Boolean,
+    required: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
