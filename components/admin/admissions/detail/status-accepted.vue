@@ -716,7 +716,7 @@ export default {
     },
     async setAcceptedStatusConfirm() {
       const { valid } = await this.$refs.form.validate();
-      if (true) {
+      if (valid) {
         const swalWithBootstrapButtons = this.$swal.mixin({
           customClass: {
             confirmButton: "btn btn-success",

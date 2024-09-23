@@ -23,7 +23,7 @@
       :search="search"
     >
       <!-- <template v-slot:aHeader.idx="{ column }">
-        {{ column.title.toUpperCase() }} aqui
+        {{ column.title.toUpperCase() }} 
       </template> -->
       <template v-slot:item.sName="{ item }">
         <p class="txt-one-line-global">{{ item.sName }}</p>
