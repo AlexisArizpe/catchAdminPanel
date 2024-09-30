@@ -179,6 +179,7 @@
               v-model="oItem.sPhoneNumber"
               variant="outlined"
               BgColor="white"
+              :required="false"
               :sCountryCallingCode="oItem.iCountryCallingCode"
               :sExtPhone="oItem.sPhoneExtension"
               :disabled="!bSuperAdmin"
@@ -198,6 +199,7 @@
           <v-col class="py-0" cols="12" sm="12">
             <v-text-field
               v-model="oItem.sWebsiteUrl"
+              :rules="linkRulesGlobal"
               :disabled="!bSuperAdmin"
               :readonly="!bSuperAdmin"
               variant="outlined"
@@ -208,14 +210,7 @@
               placeholder="Página web"
               rounded="lg"
               prepend-inner-icon="mdi mdi-web"
-
             >
-              <template #label>
-                <span class="txt-labels-form-initial-global"
-                  >Página web
-                  <span class="color-red-global">*</span>
-                </span>
-              </template>
             </v-text-field>
           </v-col>
           <!-- #endregion Página web -->
@@ -229,6 +224,7 @@
           <v-col class="py-0" cols="12" sm="12">
             <v-text-field
               v-model="oItem.sInstagramUrl"
+              :rules="linkRulesGlobal"
               :disabled="!bSuperAdmin"
               :readonly="!bSuperAdmin"
               variant="outlined"
@@ -248,6 +244,7 @@
           <v-col class="py-0" cols="12" sm="12">
             <v-text-field
               v-model="oItem.sFacebookUrl"
+              :rules="linkRulesGlobal"
               :disabled="!bSuperAdmin"
               :readonly="!bSuperAdmin"
               variant="outlined"
@@ -293,6 +290,7 @@
         </v-row>
       </v-col>
       <!-- #endregion Links de menus y horarios de apertura -->
+      
     </v-row>
   </v-form>
 </template>

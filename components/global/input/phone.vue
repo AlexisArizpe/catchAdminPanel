@@ -2,15 +2,12 @@
   <v-text-field
     v-model="sPhone"
     :disabled="disabled"
-    :readonly="readonly"
-    :hide-details="hideDetails"
     :variant="variant"
     flat
     density="comfortable"
     color="primary"
     :bg-color="BgColor"
     class="input-global"
-    required
     :rules="required ? phoneRulesGlobal : []"
     placeholder="Teléfono"
     maxlength="12"
@@ -18,7 +15,10 @@
   >
     <!-- @input="getFormatNumber('sPhone')" -->
     <template #label>
-      Teléfono <span class="color-red-global">{{ required ? "*" : "" }}</span>
+      <span>
+        Teléfono
+        <span class="color-red-global">{{ required ? "*" : "" }}</span></span
+      >
     </template>
     <template #prepend-inner>
       <div v-if="bCountryCallingCode" class="menu-country-phone-global">
@@ -57,13 +57,13 @@
     </template>
     <template #append>
       <input-quantity
-        v-model="sExt"
-        :bg-color="BgColor"
-        :readonly="readonly"
-        :variant="variant"
+        v-if="bExtPhone"
         class="input-ext-global"
+        v-model="sExt"
+        :BgColor="BgColor"
         placeholder="Ext."
         label="Ext."
+        :variant="variant"
       ></input-quantity>
     </template>
   </v-text-field>
@@ -83,6 +83,10 @@ export default {
       // type: String,
       type: [String, Number],
       default: "",
+    },
+    bExtPhone: {
+      type: Boolean,
+      default: true,
     },
     sExtPhone: {
       // type: String,
@@ -139,6 +143,9 @@ export default {
   },
   beforeMount() {
     this.getCountrys();
+    if (this.sCountryCallingCode) {
+      this.sCountryCallingCodeSelected = this.sCountryCallingCode;
+    }
     if (this.sExtPhone) {
       this.sExt = this.sExtPhone;
     }

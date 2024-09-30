@@ -349,6 +349,7 @@ export default {
                     return statusOrder[a.eStatus] - statusOrder[b.eStatus];
                   })
                 : [],
+            sImg: e.Image ? e.Image.oImages.xlg : null,
             aRatings: [
               {
                 sLabel: "Producto",

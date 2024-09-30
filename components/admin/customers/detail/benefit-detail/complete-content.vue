@@ -86,18 +86,16 @@
             >
               Monto de la cuenta:
               <span class="txt-info-date txt-info-price-date"
-                >${{ getFormatMoneyGlobal(oItem.dTicketAmount) }}</span
+                >${{ getFormatMoneyGlobal(oItem?.dTicketAmount ?? 0) }}</span
               >
             </p>
             <!-- #endregion Monto de cuenta (Solo canjeado) -->
+          </div>
 
-            <!-- #region Insta , Encuesta y rating (Solo Completo) -->
-            <div
-              v-if="oItemRecord.eStatus == 'completed'"
-              class="content-insta-survey-rating"
-            >
-              <!-- #region content-insta-survey -->
-              <!-- <div class="content-insta-survey">
+          <!-- #region Insta , Encuesta y rating (Solo Completo) -->
+          <div v-if="iStatus == 3" class="content-insta-survey-rating">
+            <!-- #region content-insta-survey -->
+            <!-- <div class="content-insta-survey">
                 <div class="content-item-insta-survey">
                   <p class="txt-title-date">Stories de instagram</p>
                   <div class="content-icon-check">
@@ -111,28 +109,28 @@
                   </div>
                 </div>
               </div> -->
-              <!-- #endregion content-insta-survey -->
-              <v-divider class="my-5" />
-              <!-- #region rating -->
-              <div class="content-items-rating">
-                <div
-                  v-for="(oRating, iRating) in oItem.aRatings"
-                  :key="iRating"
-                  class="content-item-rating"
-                >
-                  <p class="txt-info-date">{{ oRating.sLabel }}</p>
-                  <v-rating
-                    v-model="oRating.dRating"
-                    disabled
-                    size="small"
-                    density="compact"
-                  ></v-rating>
-                </div>
+            <!-- #endregion content-insta-survey -->
+            <v-divider class="my-5" />
+            <!-- #region rating -->
+            <div class="content-items-rating">
+              <div
+                v-for="(oRating, iRating) in oItem.aRatings"
+                :key="iRating"
+                class="content-item-rating"
+              >
+                <p class="txt-info-date">{{ oRating.sLabel }}</p>
+                <v-rating
+                  v-model="oRating.dRating"
+                  disabled
+                  size="small"
+                  density="compact"
+                ></v-rating>
               </div>
-              <!-- #endregion rating -->
+            </div>
+            <!-- #endregion rating -->
 
-              <!-- #region btns -->
-              <!-- <div class="content-items-btns">
+            <!-- #region btns -->
+            <!-- <div class="content-items-btns">
                 <div
                   v-for="(oQualifier, iQualifer) in aBtnQualifiers"
                   :key="iQualifer"
@@ -141,16 +139,20 @@
                   {{ oQualifier }}
                 </div>
               </div> -->
-              <!-- #endregion btns -->
+            <!-- #endregion btns -->
 
-              <!-- #region description -->
+            <!-- #region description -->
+            <div class="content-txt-description-img">
               <p class="txt-description">
                 {{ oItem.sComments ?? "Sin comentarios" }}
               </p>
-              <!-- #endregion description -->
+              <div v-if="oItem.sImg" class="content-img-qualify">
+                <v-img width="100%" height="100%" :src="oItem.sImg"></v-img>
+              </div>
             </div>
-            <!-- #endregion Insta , Encuesta y rating (Solo Completo) -->
+            <!-- #endregion description -->
           </div>
+          <!-- #endregion Insta , Encuesta y rating (Solo Completo) -->
         </div>
 
         <!-- #endregion Resumen del beneficio -->
@@ -439,6 +441,13 @@ export default {
   font-size: 0.8rem;
 }
 
+.content-txt-description-img {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 0px;
+}
+
 .txt-description {
   margin-top: 20px;
   text-align: center;
@@ -446,6 +455,14 @@ export default {
   font-style: italic;
   font-weight: 500;
   line-height: 15.23px;
+}
+.content-img-qualify {
+  width: 200px;
+  max-width: 200px;
+  min-width: 200px;
+  height: 200px;
+  max-height: 200px;
+  min-height: 200px;
 }
 
 /* #endregion content-record-benefit */

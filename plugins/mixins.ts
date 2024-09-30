@@ -138,6 +138,13 @@ const myMixin = {
         typeBenefitsRules: [(v: any) => !!v || "El tipo de beneficio es requerido"],
         typeCategoryRules: [(v: any) => !!v || "La categoría del beneficio es requerida"],
         locationRulesGlobal: [(v: any) => !!v || "La localización es requerido"],
+        linkRulesGlobal: [
+            (v: string) =>
+                !v || /^(http:\/\/|https:\/\/)/.test(v) || "El link debe comenzar con http:// o https://",
+            (v: string) =>
+                !v || /^(https?:\/\/)[\w.-]+\.[a-z]{2,6}(\/[\w.-]*)*(\?[\w=&%-]*)?$/.test(v) || "Ingrese un link válido",
+        ],
+        
         passwordRulesGlobal: [
             (v: any) => !!v || "La contraseña es requerida",
             (v: any) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{6,}$/.test(v) || 'La contraseña debe tener como mínimo 6 caracteres, una minúscula,una mayúscula y un caracter especial' // Validación para números y dos decimales
