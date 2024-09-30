@@ -1,25 +1,24 @@
 <template>
-  <v-row >
+  <v-row>
     <!-- #region Número de teléfono de reservaciones -->
 
     <v-col class="py-0" cols="12" sm="4">
       <p class="txt-subtitle-form-global mb-2">
         Número de teléfono de reservaciones
       </p>
-      <v-text-field
+      <input-phone
         v-model="oItem.ReservationData.sCallNumber"
+        variant="outlined"
+        BgColor="white"
+        :required="false"
+        :sCountryCallingCode="oItem.ReservationData.iCallCallingCode"
+        :bExtPhone="false"
         :disabled="!bSuperAdmin"
         :readonly="!bSuperAdmin"
-        variant="outlined"
-        flat
-        density="comfortable"
-        color="primary"
-        bg-color="white"
         placeholder="Número de teléfono de reservaciones"
-        rounded="lg"
+        @setCountryPhone="setCountryPhone($event, 'iCallCallingCode')"
         @input="getFormatPhoneNumber('sCallNumber')"
-      >
-      </v-text-field>
+      ></input-phone>
     </v-col>
     <!-- #endregion Número de teléfono de reservaciones -->
 
@@ -28,22 +27,19 @@
       <p class="txt-subtitle-form-global mb-2">
         Número de teléfono de WhatsApp
       </p>
-
-      <v-text-field
+      <input-phone
         v-model="oItem.ReservationData.sWhatsappNumber"
+        variant="outlined"
+        BgColor="white"
+        :required="false"
+        :sCountryCallingCode="oItem.ReservationData.iWhatsappCallingCode"
+        :bExtPhone="false"
         :disabled="!bSuperAdmin"
         :readonly="!bSuperAdmin"
-        variant="outlined"
-        flat
-        density="comfortable"
-        color="primary"
-        bg-color="white"
         placeholder="Número de teléfono de WhatsApp"
-        rounded="lg"
+        @setCountryPhone="setCountryPhone($event, 'iWhatsappCallingCode')"
         @input="getFormatPhoneNumber('sWhatsappNumber')"
-        prepend-inner-icon="mdi mdi-whatsapp"
-      >
-      </v-text-field>
+      ></input-phone>
     </v-col>
     <!-- #endregion Número de teléfono de WhatsApp -->
 
@@ -84,6 +80,9 @@ export default {
     },
   },
   methods: {
+    setCountryPhone($event, iCountryCallingCode) {
+      this.oItem.ReservationData[iCountryCallingCode] = $event;
+    },
     getFormatPhoneNumber(field) {
       this.oItem.ReservationData[field] = this.getFormatPhoneNumberGlobal(
         this.oItem.ReservationData[field]

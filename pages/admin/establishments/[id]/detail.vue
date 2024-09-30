@@ -434,8 +434,10 @@ export default {
 
       // #region Datos de reservas
       ReservationData: {
+        iCallCallingCode: 2,
         sCallNumber: null,
         sReservationUrl: null,
+        iWhatsappCallingCode: 2,
         sWhatsappNumber: null,
       },
       // #endregion Datos de reservas
@@ -808,13 +810,18 @@ export default {
       // #region Menu Link o PDF
       this.oItem.sMenuUrl = oItem.establishment?.sMenuUrl;
       this.oItem.oFileMenuPDF = {
-        sName:
+        sId:
           oItem.establishment?.Menus.length > 0
-            ? oItem.establishment?.Menus[0].sName
+            ? oItem.establishment?.Menus.reverse()[0].sDocumentId
             : null,
+        sName: oItem.establishment?.Menus.length > 0 ? "Menú" : null,
+        // sName:
+        //   oItem.establishment?.Menus.length > 0
+        //     ? oItem.establishment?.Menus.reverse()[0].sName
+        //     : null,
         sUrl:
           oItem.establishment?.Menus.length > 0
-            ? oItem.establishment?.Menus[0].sFileUrl
+            ? oItem.establishment?.Menus.reverse()[0].sFileUrl
             : null,
         oFile: null,
       };
@@ -909,6 +916,9 @@ export default {
       // #endregion Caracteristicas del restaurante
 
       // #region Datos de reservas
+      this.oItem.ReservationData.iCallCallingCode =
+        oItem.establishment?.ReservationData?.iCallCallingCode ?? 2;
+
       if (oItem.establishment?.ReservationData.sCallNumber) {
         this.oItem.ReservationData.sCallNumber =
           this.getFormatPhoneNumberGlobal(
@@ -918,6 +928,9 @@ export default {
 
       this.oItem.ReservationData.sReservationUrl =
         oItem.establishment?.ReservationData.sReservationUrl;
+
+      this.oItem.ReservationData.iWhatsappCallingCode =
+        oItem.establishment?.ReservationData?.iWhatsappCallingCode ?? 2;
 
       if (oItem.establishment?.ReservationData.sWhatsappNumber) {
         this.oItem.ReservationData.sWhatsappNumber =
@@ -1275,6 +1288,11 @@ export default {
       }, {});
       // #endregion Convierte el arreglo de amenities en obj
 
+      console.log({
+        ...oAmenities,
+        ePriceRange: this.oItem.oAmenities.ePriceRange ?? null, // VALORES: '$' | '$$' | '$$$' | '$$$$'
+      });
+
       return {
         sName: this.oItem.sName,
         sDescription: this.oItem.sDescription,
@@ -1298,10 +1316,12 @@ export default {
         sFacebookUrl: this.oItem.sFacebookUrl,
         sChefName: this.oItem.sChefName,
         ReservationData: {
+          iWhatsappCallingCode: this.oItem.ReservationData.iWhatsappCallingCode,
           sWhatsappNumber: this.oItem.ReservationData.sWhatsappNumber
             ? this.oItem.ReservationData.sWhatsappNumber.replaceAll("-", "")
             : null,
           sReservationUrl: this.oItem.ReservationData.sReservationUrl,
+          iCallCallingCode: this.oItem.ReservationData.iCallCallingCode,
           sCallNumber: this.oItem.ReservationData.sCallNumber
             ? this.oItem.ReservationData.sCallNumber.replaceAll("-", "")
             : null,
@@ -1323,8 +1343,8 @@ export default {
           sPhoneExtension: this.oItem.BillingInformation.sPhoneExtension,
         },
         Amenities: {
-          ePriceRange: this.oItem.oAmenities.ePriceRange, // VALORES: '$' | '$$' | '$$$' | '$$$$'
           ...oAmenities,
+          ePriceRange: this.oItem.oAmenities.ePriceRange ?? null, // VALORES: '$' | '$$' | '$$$' | '$$$$'
         },
         FoodTypes: this.oItem.FoodTypes.filter(
           (eFilter) => eFilter.bActive === true

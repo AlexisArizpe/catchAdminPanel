@@ -314,6 +314,7 @@ export default {
               const statusOrder = { active: 1, completed: 2, redeemed: 3 };
               return statusOrder[a.eStatus] - statusOrder[b.eStatus];
             }),
+            sImg: e.Image ? e.Image.oImages.xlg : null,
             aRatings: [
               {
                 sLabel: "Producto",

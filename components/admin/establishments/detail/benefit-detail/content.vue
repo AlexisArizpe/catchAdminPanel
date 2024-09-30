@@ -849,7 +849,7 @@
   </v-card>
 </template>
 <script>
-import moment from "moment";
+import moment from "moment-timezone";
 export default {
   props: {
     sIdBenefit: String,
@@ -863,6 +863,7 @@ export default {
     },
   },
   data: () => ({
+    sTimezoneId: null,
     sToReturn: "admin-benefits",
     aImg: [
       {
@@ -1108,8 +1109,8 @@ export default {
     // this.sTime = this.getNewDateTimeGlobal(true);
     if (this.oItem) {
       await this.getCategories();
-      this.setFillData(this.oItem);
-      // await this.getItem();
+      // this.setFillData(this.oItem);
+      await this.getItem();
     }
   },
   emits: ["setStatus", "setActiveModify", "setCloseDialog"],
@@ -1123,7 +1124,7 @@ export default {
           params: {},
         };
         let oResult = await this.$api.get(
-          `benefits/${this.sIdBenefit}`,
+          `benefits/${this.oItem.sBenefitId}/public`,
           payload
         );
         this.setFillData(oResult.data.benefit);
@@ -1203,6 +1204,8 @@ export default {
         ).join(", ")}`;
         // #endregion Cantidad de personas
 
+        this.sTimezoneId = oItem.Establishment.sTimezoneId;
+
         // #region disponible los dias
         this.aWeekDayIds.forEach((element) => {
           if (
@@ -1214,32 +1217,30 @@ export default {
           }
         });
         if (this.bLightning) {
-          this.sWeekDays = `<span class="font-weight-bold">HOY <span class="color-black-global">de</span> ${this.getHours(
-            new Date(oItem.tStartDate)
-          )} <span class="color-black-global">a</span> ${this.getHours(
-            new Date(oItem.tEndDate)
+          this.sWeekDays = `<span class="font-weight-bold">HOY <span class="color-black-global">de</span> ${this.getHoursUTC(
+            oItem.tStartDate
+          )} <span class="color-black-global">a</span> ${this.getHoursUTC(
+            oItem.tEndDate
           )}  </span>`;
         } else {
           this.sWeekDays = this.getWeekDays(oItem.WeekDays);
         }
         // #endregion disponible los dias
 
-        this.sDate = `${this.getFormatDDMMYYYY(
-          new Date(oItem.tStartDate)
-        )} ~ ${this.getFormatDDMMYYYY(new Date(oItem.tEndDate))} `;
+        this.sDate = `${this.getFormatDDMMYYYYUTC(
+          oItem.tStartDate
+        )} ~ ${this.getFormatDDMMYYYYUTC(oItem.tEndDate)} `;
         this.aDate = [oItem.tStartDate, oItem.tEndDate];
 
-        this.tStartDate = new Date(oItem.tStartDate);
-        this.tEndDate = new Date(oItem.tEndDate);
+        this.tStartDate = oItem.tStartDate;
+        this.tEndDate = oItem.tEndDate;
 
-        this.sTime = `${this.getHours(
-          new Date(oItem.tStartDate)
-        )} ~ ${this.getHours(new Date(oItem.tEndDate))}`;
+        this.sTime = `${this.getHoursUTC(
+          oItem.tStartDate
+        )} ~ ${this.getHoursUTC(oItem.tEndDate)}`;
 
-        let aStartHourTemp = this.getHours(new Date(oItem.tStartDate)).split(
-          ":"
-        );
-        let aEndHourTemp = this.getHours(new Date(oItem.tEndDate)).split(":");
+        let aStartHourTemp = this.getHoursUTC(oItem.tStartDate).split(":");
+        let aEndHourTemp = this.getHoursUTC(oItem.tEndDate).split(":");
         this.tStartTime = {
           hours: Number(aStartHourTemp[0]),
           minutes: Number(aStartHourTemp[1]),
@@ -1693,9 +1694,9 @@ export default {
         case "finished":
           return {
             sLabelCommentRecord: "Período de vigencia:",
-            sCommentRecord: `Completo del ${this.getFormatDDMMYYYY(
-              new Date(oItem.tStartDate)
-            )} al  ${this.getFormatDDMMYYYY(new Date(oItem.tEndDate))} `,
+            sCommentRecord: `Completo del ${this.getFormatDDMMYYYYUTC(
+              oItem.tStartDate
+            )} al  ${this.getFormatDDMMYYYY(oItem.tEndDate)} `,
             sLabelCreatedByRecord: "Beneficio creado por:",
             sCreatedByRecord: oItem.CreatedBy
               ? `${oItem.CreatedBy.sName} ${oItem.CreatedBy.sLastName}`
@@ -1707,6 +1708,103 @@ export default {
             sLabel: "5",
             sResult: "6",
           };
+      }
+    },
+
+    // Metodos de Dates
+    getNewDate(tDate) {
+      // Crear un objeto Date a partir de la cadena ISO
+      const dateStart = new Date(tDate);
+
+      // Especificar la zona horaria desde this.sTimezoneId
+      const timeZoneStart = this.sTimezoneId;
+
+      // Comprobar si dateStart es una fecha válida
+      if (!isNaN(dateStart.getTime())) {
+        try {
+          // Convertir la fecha a la zona horaria deseada usando moment-timezone
+          const zonedDateStart = moment.tz(dateStart, timeZoneStart);
+
+          // Obtener la hora ajustada en milisegundos
+          const tDateFormatTemp = zonedDateStart.format(
+            "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (z)"
+          ); // Esto toma la fecha ajustada a la zona horaria correcta
+          const tDateTemp = new Date(zonedDateStart.format()); // Esto toma la fecha ajustada a la zona horaria correcta
+
+          // Formatear la fecha para la zona horaria correcta
+
+          // return tDateFormatTemp; // Objeto Date ajustado correctamente
+          return tDateTemp; // Objeto Date ajustado correctamente
+        } catch (error) {
+          console.error("Error al convertir la fecha:", error);
+        }
+      } else {
+        console.error("Fecha inválida:", tDate);
+      }
+    },
+    getFormatDDMMYYYYUTC(tDate, bHours) {
+      try {
+        // Crear un objeto Date a partir de la cadena ISO
+        const dateStart = new Date(tDate);
+
+        // Especificar la zona horaria desde this.sTimezoneId
+        const timeZoneStart = this.sTimezoneId;
+
+        // Comprobar si dateStart es una fecha válida
+        if (!isNaN(dateStart.getTime())) {
+          try {
+            // Convertir la fecha a la zona horaria deseada usando moment-timezone
+            const zonedDateStart = moment.tz(dateStart, timeZoneStart);
+
+            // Obtener el día, mes, año, hora y minuto
+            let sDay = zonedDateStart.date().toString().padStart(2, "0"); // Día
+            let sMonth = (zonedDateStart.month() + 1)
+              .toString()
+              .padStart(2, "0"); // Mes (agregar 1 porque es 0-indexed)
+            let sYear = zonedDateStart.year().toString(); // Año
+
+            let sHours = zonedDateStart.hours().toString().padStart(2, "0"); // Horas
+            let sMinutes = zonedDateStart.minutes().toString().padStart(2, "0"); // Minutos
+
+            // Formatear y retornar la fecha
+            return (
+              `${sDay}-${sMonth}-${sYear}` +
+              (bHours ? ` a las ${sHours}:${sMinutes}` : "")
+            );
+          } catch (error) {
+            console.error("Error al convertir la fecha:", error);
+          }
+        } else {
+          console.error("Fecha inválida:", tDate);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    getHoursUTC(tDate) {
+      try {
+        // Crear un objeto Date a partir de la cadena ISO
+        const dateStart = new Date(tDate);
+
+        // Especificar la zona horaria desde this.sTimezoneId
+        const timeZoneStart = this.sTimezoneId;
+
+        // Comprobar si dateStart es una fecha válida
+        if (!isNaN(dateStart.getTime())) {
+          try {
+            // Convertir la fecha a la zona horaria deseada usando moment-timezone
+            const zonedDateStart = moment.tz(dateStart, timeZoneStart);
+            const hours = zonedDateStart.hours();
+            const minutes = zonedDateStart.minutes();
+            return `${hours}:${minutes}`; // Objeto Date ajustado correctamente
+          } catch (error) {
+            console.error("Error al convertir la fecha:", error);
+          }
+        } else {
+          console.error("Fecha inválida:", tDate);
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
   },
@@ -1746,7 +1844,10 @@ export default {
     },
     tStartDate(sNew, sOld) {
       if (this.tStartDate) {
-        this.tStartDateFormat = this.getFormatDDMMYYYY(this.tStartDate, false);
+        this.tStartDateFormat = this.getFormatDDMMYYYYUTC(
+          this.tStartDate,
+          false
+        );
       } else {
         this.tEndDate = null;
         this.tEndDateFormat = null;
@@ -1761,7 +1862,7 @@ export default {
     },
     tEndDate() {
       if (this.tEndDate) {
-        this.tEndDateFormat = this.getFormatDDMMYYYY(this.tEndDate, false);
+        this.tEndDateFormat = this.getFormatDDMMYYYYUTC(this.tEndDate, false);
       }
     },
     tEndDateFormat() {

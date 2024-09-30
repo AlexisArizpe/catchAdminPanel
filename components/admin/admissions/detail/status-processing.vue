@@ -492,6 +492,7 @@ export default {
       this.sFullNameManager = `${oItem.User.sName} ${oItem.User.sLastName}`;
       this.sNameManager = oItem.User.sName;
       this.sLastNameManager = oItem.User.sLastName;
+      this.iCountryCallingCodeManager = oItem.User.iCountryCallingCode;
       this.sPhoneNumberManager = this.getFormatPhoneNumberGlobal(
         oItem.User.sPhoneNumber
       );
@@ -760,62 +761,67 @@ export default {
       }
     },
     async setChange() {
-      // form
-      try {
-        this.bLoadingBtnChange = true;
-        const config = {
-            headers: {
-              Authorization: `Bearer ${this.$store.user.sToken}`,
+      const { valid } = await this.$refs.form.validate();
+      if (valid) {
+        try {
+          this.bLoadingBtnChange = true;
+          const config = {
+              headers: {
+                Authorization: `Bearer ${this.$store.user.sToken}`,
+              },
             },
-          },
-          payload = {
-            Establishment: {
-              sName: this.sNameRestaurant,
-              sPhoneNumber: this.sPhoneNumberRestaurant
-                ? this.sPhoneNumberRestaurant.replaceAll("-", "")
-                : null,
-              sPhoneExtension: this.sPhoneExtensionRestaurant,
-              // México
-              iCountryCallingCode: this.iCountryCallingCodeRestaurant,
-              sLocationAddress: this.sAddressRestaurant,
-              sLocationAddressDetail: this.sAddressSpecificRestaurant,
-              sLocationAddressCity: this.sCityRestaurant,
-              // Nuevo León
-              iLocationAddressState: this.iStateRestaurant,
-              sLocationAddressZIPCode: this.sZIPRestaurant,
-              dLocationLatitude: this.dLocationLatitude,
-              dLocationLongitude: this.dLocationLongitude,
-            },
-            User: {
-              sName: this.sNameManager,
-              sLastName: this.sLastNameManager,
-              sPhoneNumber: this.sPhoneNumberManager,
-              sPhoneExtension: this.sPhoneExtensionManager,
-            },
-          };
-        const oResult = await this.$api.put(
-          `admissions/${this.sAdmissionId}`,
-          payload,
-          config
-        );
-        this.$swal.fire({
-          title: `Actualizado!`,
-          text: oResult.data.message,
-          icon: "success",
-          confirmButtonText: "Cerrar",
-        });
-        this.$store.table.setRefresh(true);
-        this.bLoadingBtnChange = false;
-      } catch (error) {
-        console.log(error);
+            payload = {
+              Establishment: {
+                sName: this.sNameRestaurant,
+                sPhoneNumber: this.sPhoneNumberRestaurant
+                  ? this.sPhoneNumberRestaurant.replaceAll("-", "")
+                  : null,
+                sPhoneExtension: this.sPhoneExtensionRestaurant,
+                // México
+                iCountryCallingCode: this.iCountryCallingCodeRestaurant,
+                sLocationAddress: this.sAddressRestaurant,
+                sLocationAddressDetail: this.sAddressSpecificRestaurant,
+                sLocationAddressCity: this.sCityRestaurant,
+                // Nuevo León
+                iLocationAddressState: this.iStateRestaurant,
+                sLocationAddressZIPCode: this.sZIPRestaurant,
+                dLocationLatitude: this.dLocationLatitude,
+                dLocationLongitude: this.dLocationLongitude,
+              },
+              User: {
+                sName: this.sNameManager,
+                sLastName: this.sLastNameManager,
+                iCountryCallingCode: this.iCountryCallingCodeManager,
+                sPhoneNumber: this.sPhoneNumberManager
+                  ? this.sPhoneNumberManager.replaceAll("-", "")
+                  : null,
+                sPhoneExtension: this.sPhoneExtensionManager,
+              },
+            };
+          const oResult = await this.$api.put(
+            `admissions/${this.sAdmissionId}`,
+            payload,
+            config
+          );
+          this.$swal.fire({
+            title: `Actualizado!`,
+            text: oResult.data.message,
+            icon: "success",
+            confirmButtonText: "Cerrar",
+          });
+          this.$store.table.setRefresh(true);
+          this.bLoadingBtnChange = false;
+        } catch (error) {
+          console.log(error);
 
-        this.bLoadingBtnChange = false;
-        this.$swal.fire({
-          title: "¡Error!",
-          text: error.response.data.message,
-          icon: "error",
-          confirmButtonText: "Cerrar",
-        });
+          this.bLoadingBtnChange = false;
+          this.$swal.fire({
+            title: "¡Error!",
+            text: error.response.data.message,
+            icon: "error",
+            confirmButtonText: "Cerrar",
+          });
+        }
       }
     },
     setLocation(oLocation) {

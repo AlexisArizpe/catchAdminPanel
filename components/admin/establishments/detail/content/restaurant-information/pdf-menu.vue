@@ -94,8 +94,6 @@
       ref="inputFile"
       class="d-none"
       label="File input"
-      accept=".pdf"
-
     ></v-file-input>
     <!-- #endregion Btn de Agregar menú en PDF -->
   </div>
@@ -142,6 +140,28 @@ export default {
     setMenuType(sMenuType) {
       this.oItem.sMenuType = sMenuType;
     },
+    async setDeleteAPI(sId) {
+      try {
+        const config = {
+            headers: {
+              Authorization: `Bearer ${this.$store.user.sToken}`,
+            },
+          },
+          payload = {};
+        const oResult = await this.$api.delete(
+          `establishments/menus/${sId}`,
+          config,
+          payload
+        );
+
+        this.$toast(oResult.data.message, {
+          type: "success",
+          hideProgressBar: true,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
   watch: {
     aPDFMenu: {
@@ -150,20 +170,25 @@ export default {
           this.getMaskedFileGlobal(newVal[0])
         );
 
-        this.sPDFNameMenuEdit = newVal[0].name;
+        // this.sPDFNameMenuEdit = newVal[0].name;
+        this.sPDFNameMenuEdit = "Menú";
         this.sPDFLinkMenu = sPDFLinkMenuTemp.url;
         this.oPDFFielMenu = newVal[0];
 
         this.oItem.oFileMenuPDF = {
-          sName: newVal[0].name,
+          // sName: newVal[0].name,
+          sName: "Menú",
           sUrl: sPDFLinkMenuTemp.url,
           oFile: newVal[0],
         };
       },
       deep: true,
     },
-    "oItem.oFileMenuPDF.sName"() {
+    async "oItem.oFileMenuPDF.sName"() {
       if (this.oItem.oFileMenuPDF.sName === null) {
+        if (this.oItem.oFileMenuPDF.sId) {
+          this.setDeleteAPI(this.oItem.oFileMenuPDF.sId);
+        }
         this.$refs.inputFile.value = null;
       }
     },

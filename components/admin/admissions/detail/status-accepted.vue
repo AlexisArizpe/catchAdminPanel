@@ -514,6 +514,7 @@ export default {
       this.sFullNameManager = `${oItem.User.sName} ${oItem.User.sLastName}`;
       this.sNameManager = oItem.User.sName;
       this.sLastNameManager = oItem.User.sLastName;
+      this.iCountryCallingCodeManager = oItem.User.iCountryCallingCode;
       this.sPhoneNumberManager = this.getFormatPhoneNumberGlobal(
         oItem.User.sPhoneNumber
       );
